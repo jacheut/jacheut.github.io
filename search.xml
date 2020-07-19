@@ -1,6 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>JVM内存结构</title>
+    <url>/JVM%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/</url>
+    <content><![CDATA[<p>JVM 整体由 4 部分组成：</p>
+<blockquote>
+<p>加载：类加载器 ClassLoader<br>执行：执行引擎<br>内存：运行时数据区，Runtime Date Area<br>内存回收：垃圾回收</p>
+</blockquote>
+<p><img src="https://note.youdao.com/yws/public/resource/3c3ff9fb6ef41558966833fe2047f1d2/xmlnote/A6931B8E8C564071B2D085E64E1C0D21/28119" alt="alt"></p>
+]]></content>
+      <categories>
+        <category>JVM</category>
+      </categories>
+      <tags>
+        <tag>JVM</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MySQL主从复制原理</title>
+    <url>/MySQL%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8E%9F%E7%90%86/</url>
+    <content><![CDATA[<p><strong>mysql主从复制需要三个线程，master（binlog dump thread）、slave（I/O thread 、SQL thread）。</strong></p>
+<h2 id="主从复制"><a href="#主从复制" class="headerlink" title="主从复制"></a>主从复制</h2><p><img src="https://user-gold-cdn.xitu.io/2019/4/2/169db46b2582abe2?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="alt"></p>
+<h3 id="master"><a href="#master" class="headerlink" title="master"></a>master</h3><blockquote>
+<p>（1）<strong>binlog dump线程</strong>：当主库中有数据更新时，那么主库就会根据按照设置的binlog格式，将此次更新的事件类型写入到主库的binlog文件中，此时主库会创建log dump线程通知slave有数据更新。</p>
+</blockquote>
+<h3 id="slave"><a href="#slave" class="headerlink" title="slave"></a>slave</h3><blockquote>
+<p>（2）<strong>I/O线程</strong>：该线程会连接到master，向log dump线程请求一份指定binlog文件位置的副本，并将请求回来的binlog存到本地的relay log中，relay log和binlog日志一样也是记录了数据更新的事件，它也是按照递增后缀名的方式，产生多个relay log（ host_name-relay-bin.000001）文件，slave会使用一个index文件（ host_name-relay-bin.index）来追踪当前正在使用的relay log文件。</p>
+</blockquote>
+<blockquote>
+<p>（3）<strong>SQL线程</strong>：该线程检测到relay log有更新后，会读取并在本地做redo操作，将发生在主库的事件在本地重新执行一遍，来保证主从数据同步。此外，如果一个relay log文件中的全部事件都执行完毕，那么SQL线程会自动将该relay log 文件删除掉。</p>
+</blockquote>
+<h2 id="半同步复制"><a href="#半同步复制" class="headerlink" title="半同步复制"></a>半同步复制</h2><p><code>如何解决MySQL主库宕机导致的数据丢失情况？</code></p>
+<p>使用半同步复制。在主库commit之前，需要先将binlog同步到从库，主库可以设置同步binlog的过期时间，在binlog复制到从库之后，从库后续会自行重放中继日志。不过这样也增加了客户端的延迟。另外这个需要安装下MySQL的插件。</p>
+<p><img src="https://note.youdao.com/yws/public/resource/c9fd2f2bbbcdfdd5b8c1ba3a4f857cda/xmlnote/38525674C8A541A68A3A321D08531D57/28242" alt="alt"></p>
+<p>MySQL的半同步插件为：semisync_xx.so</p>
+]]></content>
+      <categories>
+        <category>MySQL</category>
+      </categories>
+      <tags>
+        <tag>MySQL</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>MySQL规范</title>
     <url>/MySQL%E8%A7%84%E8%8C%83/</url>
     <content><![CDATA[<h1 id="一、基础规范"><a href="#一、基础规范" class="headerlink" title="一、基础规范"></a>一、基础规范</h1><ul>
@@ -144,50 +186,8 @@
         <category>MySQL</category>
       </categories>
       <tags>
+        <tag>MySQL</tag>
         <tag>数据库</tag>
-        <tag>MySQL</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>MySQL主从复制原理</title>
-    <url>/MySQL%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8E%9F%E7%90%86/</url>
-    <content><![CDATA[<p><strong>mysql主从复制需要三个线程，master（binlog dump thread）、slave（I/O thread 、SQL thread）。</strong></p>
-<h2 id="主从复制"><a href="#主从复制" class="headerlink" title="主从复制"></a>主从复制</h2><p><img src="https://user-gold-cdn.xitu.io/2019/4/2/169db46b2582abe2?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="alt"></p>
-<h3 id="master"><a href="#master" class="headerlink" title="master"></a>master</h3><blockquote>
-<p>（1）<strong>binlog dump线程</strong>：当主库中有数据更新时，那么主库就会根据按照设置的binlog格式，将此次更新的事件类型写入到主库的binlog文件中，此时主库会创建log dump线程通知slave有数据更新。</p>
-</blockquote>
-<h3 id="slave"><a href="#slave" class="headerlink" title="slave"></a>slave</h3><blockquote>
-<p>（2）<strong>I/O线程</strong>：该线程会连接到master，向log dump线程请求一份指定binlog文件位置的副本，并将请求回来的binlog存到本地的relay log中，relay log和binlog日志一样也是记录了数据更新的事件，它也是按照递增后缀名的方式，产生多个relay log（ host_name-relay-bin.000001）文件，slave会使用一个index文件（ host_name-relay-bin.index）来追踪当前正在使用的relay log文件。</p>
-</blockquote>
-<blockquote>
-<p>（3）<strong>SQL线程</strong>：该线程检测到relay log有更新后，会读取并在本地做redo操作，将发生在主库的事件在本地重新执行一遍，来保证主从数据同步。此外，如果一个relay log文件中的全部事件都执行完毕，那么SQL线程会自动将该relay log 文件删除掉。</p>
-</blockquote>
-<h2 id="半同步复制"><a href="#半同步复制" class="headerlink" title="半同步复制"></a>半同步复制</h2><p><code>如何解决MySQL主库宕机导致的数据丢失情况？</code></p>
-<p>使用半同步复制。在主库commit之前，需要先将binlog同步到从库，主库可以设置同步binlog的过期时间，在binlog复制到从库之后，从库后续会自行重放中继日志。不过这样也增加了客户端的延迟。另外这个需要安装下MySQL的插件。</p>
-<p><img src="https://note.youdao.com/yws/public/resource/c9fd2f2bbbcdfdd5b8c1ba3a4f857cda/xmlnote/38525674C8A541A68A3A321D08531D57/28242" alt="alt"></p>
-<p>MySQL的半同步插件为：semisync_xx.so</p>
-]]></content>
-      <categories>
-        <category>MySQL</category>
-      </categories>
-      <tags>
-        <tag>MySQL</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>JVM内存结构</title>
-    <url>/JVM%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/</url>
-    <content><![CDATA[<p>JVM 整体由 4 部分组成：</p>
-<blockquote>
-<p>加载：类加载器 ClassLoader<br>执行：执行引擎<br>内存：运行时数据区，Runtime Date Area<br>内存回收：垃圾回收</p>
-</blockquote>
-<p><img src="https://note.youdao.com/yws/public/resource/3c3ff9fb6ef41558966833fe2047f1d2/xmlnote/A6931B8E8C564071B2D085E64E1C0D21/28119" alt="alt"></p>
-]]></content>
-      <categories>
-        <category>JVM</category>
-      </categories>
-      <tags>
-        <tag>JVM</tag>
       </tags>
   </entry>
   <entry>
@@ -397,42 +397,12 @@
       </tags>
   </entry>
   <entry>
-    <title>1135. 最低成本联通所有城市</title>
-    <url>/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/leetcode/%E5%B9%B6%E6%9F%A5%E9%9B%86/%E6%9C%80%E4%BD%8E%E6%88%90%E6%9C%AC%E8%81%94%E9%80%9A%E6%89%80%E6%9C%89%E5%9F%8E%E5%B8%82/</url>
-    <content><![CDATA[<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p>想象一下你是个城市基建规划者，地图上有 N 座城市，它们按以 1 到 N 的次序编号。</p>
-<p>给你一些可连接的选项 conections，其中每个选项 conections[i] = [city1, city2, cost] 表示将城市 city1 和城市 city2 连接所要的成本。（连接是双向的，也就是说城市 city1 和城市 city2 相连也同样意味着城市 city2 和城市 city1 相连）。</p>
-<p>返回使得每对城市间都存在将它们连接在一起的连通路径（可能长度为 1 的）最小成本。该最小成本应该是所用全部连接代价的综合。如果根据已知条件无法完成该项任务，则请你返回 -1。</p>
-<p><strong>示例 1：</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：N &#x3D; 3, conections &#x3D; [[1,2,5],[1,3,6],[2,3,1]]</span></pre></td></tr><tr><td class="code"><pre><span class="line">输出：6</span></pre></td></tr><tr><td class="code"><pre><span class="line">解释：</span></pre></td></tr><tr><td class="code"><pre><span class="line">选出任意 2 条边都可以连接所有城市，我们从中选取成本最小的 2 条。</span></pre></td></tr></table></figure>
-
-<p><strong>示例 2：</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：N &#x3D; 4, conections &#x3D; [[1,2,3],[3,4,4]]</span></pre></td></tr><tr><td class="code"><pre><span class="line">输出：-1</span></pre></td></tr><tr><td class="code"><pre><span class="line">解释： </span></pre></td></tr><tr><td class="code"><pre><span class="line">即使连通所有的边，也无法连接所有城市。</span></pre></td></tr></table></figure>
-
-<p>提示：</p>
-<ol>
-<li><code>1 &lt;= N &lt;= 10000</code></li>
-<li><code>1 &lt;= conections.length &lt;= 10000</code></li>
-<li><code>1 &lt;= conections[i][0], conections[i][1] &lt;= N</code></li>
-<li><code>0 &lt;= conections[i][2] &lt;= 10^5</code></li>
-<li><code>conections[i][0] != conections[i][1]</code></li>
-</ol>
-<h1 id="方法一：kruskal算法"><a href="#方法一：kruskal算法" class="headerlink" title="方法一：kruskal算法"></a>方法一：kruskal算法</h1><h2 id="题目解析"><a href="#题目解析" class="headerlink" title="题目解析"></a>题目解析</h2><p>1）初始阶段，每个点互不相识，各自为一个孤岛。<br>2）以题设给定的“边”为入手，不断的通过整合边所连接两个点，让所有孤岛都连接到一起。<br>3）利用贪心算法，选择cost小的边为起点，遍历所有的边。<br>4）遍历的过程中，如果发现当前边所在的两个点在两个孤岛上，则将他们合并。这一步采用的并查集方法（即为不同的集合寻找father，father相同的节点，为同一个集合）。</p>
-<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="comment">// 集合关系表，用一个数组来描述N个节点的集合关系；等同于树的数组表示方法。</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span>[] p;</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Node</span> </span>&#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">int</span> row;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">int</span> col;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">int</span> val;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">maximumMinimumPath</span><span class="params">(<span class="keyword">int</span> N, <span class="keyword">int</span>[][] connections)</span> </span>&#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">int</span> ans = <span class="number">0</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">int</span> pointNum = <span class="number">0</span>; <span class="comment">// 联通的边数</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">        p = <span class="keyword">new</span> <span class="keyword">int</span>[N + <span class="number">1</span>];</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= N; i++) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            p[i] = i;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">        PriorityQueue&lt;Node&gt; heap = <span class="keyword">new</span> PriorityQueue&lt;Node&gt;((Node o1, Node o2) -&gt; (o1.val - o2.val));</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span>[] connection : connections) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            Node node = <span class="keyword">new</span> Node();</span></pre></td></tr><tr><td class="code"><pre><span class="line">            node.row = connection[<span class="number">0</span>];</span></pre></td></tr><tr><td class="code"><pre><span class="line">            node.col = connection[<span class="number">1</span>];</span></pre></td></tr><tr><td class="code"><pre><span class="line">            node.val = connection[<span class="number">2</span>];</span></pre></td></tr><tr><td class="code"><pre><span class="line">            heap.add(node);</span></pre></td></tr><tr><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">while</span> (!heap.isEmpty()) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            Node conn = heap.poll();</span></pre></td></tr><tr><td class="code"><pre><span class="line">            <span class="keyword">int</span> px = find(conn.row), py = find(conn.col);</span></pre></td></tr><tr><td class="code"><pre><span class="line">            <span class="keyword">if</span>(px != py) &#123; <span class="comment">//如果该边所在的两个节点不在同一个集合</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">                p[px] = py; <span class="comment">//合并集合</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">                ans += conn.val;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                pointNum++;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                <span class="comment">//对于无向图的话，至少需要n-1条边可以使得图是联通的；</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">                <span class="comment">//如果对于有向图的话，至少需要n条边才可以使得图是联通的</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">                <span class="keyword">if</span>(pointNum == N - <span class="number">1</span>)&#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                    <span class="keyword">return</span> ans;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="comment">/**</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="comment">     * 不断向上找，直到找到下标和元素相同的点。</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="comment">     */</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">find</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">while</span> (x != p[x]) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            x = p[x];</span></pre></td></tr><tr><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">return</span> x;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">int</span>[][] connections = &#123;&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">5</span>&#125;, &#123;<span class="number">1</span>, <span class="number">3</span>, <span class="number">6</span>&#125;, &#123;<span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>&#125;&#125;;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        System.out.println(<span class="keyword">new</span> Solution().maximumMinimumPath(<span class="number">3</span>, connections));</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">        connections = <span class="keyword">new</span> <span class="keyword">int</span>[][]&#123;&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;, &#123;<span class="number">3</span>, <span class="number">4</span>, <span class="number">4</span>&#125;&#125;;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        System.out.println(<span class="keyword">new</span> Solution().maximumMinimumPath(<span class="number">4</span>, connections));</span></pre></td></tr><tr><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>数据结构与算法</category>
-      </categories>
-      <tags>
-        <tag>算法</tag>
-        <tag>并查集</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>接雨水-每天一道LeetCode</title>
     <url>/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/leetcode/%E5%8D%95%E8%B0%83%E6%A0%88/%E6%8E%A5%E9%9B%A8%E6%B0%B4/</url>
     <content><![CDATA[<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p>给定 n 个非负整数表示每个宽度为 1 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。</p>
 <p><img src="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/leetcode/%E5%8D%95%E8%B0%83%E6%A0%88/%E6%8E%A5%E9%9B%A8%E6%B0%B4/leetcode_42_1.png" alt></p>
 <p>上面是由数组 [0,1,0,2,1,0,1,3,2,1,2,1] 表示的高度图，在这种情况下，可以接 6 个单位的雨水（蓝色部分表示雨水）。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">示例:</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">输入: [0,1,0,2,1,0,1,3,2,1,2,1] </span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">输出: 6</span></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">示例:</span></pre></td></tr><tr><td class="code"><pre><span class="line">输入: [0,1,0,2,1,0,1,3,2,1,2,1] </span></pre></td></tr><tr><td class="code"><pre><span class="line">输出: 6</span></pre></td></tr></table></figure>
 
 
 <h1 id="方法一：单调栈"><a href="#方法一：单调栈" class="headerlink" title="方法一：单调栈"></a>方法一：单调栈</h1><h2 id="题目解析"><a href="#题目解析" class="headerlink" title="题目解析"></a>题目解析</h2><p><img src="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/leetcode/%E5%8D%95%E8%B0%83%E6%A0%88/%E6%8E%A5%E9%9B%A8%E6%B0%B4/leetcode_42_7.png" alt></p>
@@ -472,6 +442,36 @@
       </categories>
       <tags>
         <tag>算法</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>1135. 最低成本联通所有城市</title>
+    <url>/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/leetcode/%E5%B9%B6%E6%9F%A5%E9%9B%86/%E6%9C%80%E4%BD%8E%E6%88%90%E6%9C%AC%E8%81%94%E9%80%9A%E6%89%80%E6%9C%89%E5%9F%8E%E5%B8%82/</url>
+    <content><![CDATA[<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p>想象一下你是个城市基建规划者，地图上有 N 座城市，它们按以 1 到 N 的次序编号。</p>
+<p>给你一些可连接的选项 conections，其中每个选项 conections[i] = [city1, city2, cost] 表示将城市 city1 和城市 city2 连接所要的成本。（连接是双向的，也就是说城市 city1 和城市 city2 相连也同样意味着城市 city2 和城市 city1 相连）。</p>
+<p>返回使得每对城市间都存在将它们连接在一起的连通路径（可能长度为 1 的）最小成本。该最小成本应该是所用全部连接代价的综合。如果根据已知条件无法完成该项任务，则请你返回 -1。</p>
+<p><strong>示例 1：</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：N &#x3D; 3, conections &#x3D; [[1,2,5],[1,3,6],[2,3,1]]</span></pre></td></tr><tr><td class="code"><pre><span class="line">输出：6</span></pre></td></tr><tr><td class="code"><pre><span class="line">解释：</span></pre></td></tr><tr><td class="code"><pre><span class="line">选出任意 2 条边都可以连接所有城市，我们从中选取成本最小的 2 条。</span></pre></td></tr></table></figure>
+
+<p><strong>示例 2：</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：N &#x3D; 4, conections &#x3D; [[1,2,3],[3,4,4]]</span></pre></td></tr><tr><td class="code"><pre><span class="line">输出：-1</span></pre></td></tr><tr><td class="code"><pre><span class="line">解释： </span></pre></td></tr><tr><td class="code"><pre><span class="line">即使连通所有的边，也无法连接所有城市。</span></pre></td></tr></table></figure>
+
+<p>提示：</p>
+<ol>
+<li><code>1 &lt;= N &lt;= 10000</code></li>
+<li><code>1 &lt;= conections.length &lt;= 10000</code></li>
+<li><code>1 &lt;= conections[i][0], conections[i][1] &lt;= N</code></li>
+<li><code>0 &lt;= conections[i][2] &lt;= 10^5</code></li>
+<li><code>conections[i][0] != conections[i][1]</code></li>
+</ol>
+<h1 id="方法一：kruskal算法"><a href="#方法一：kruskal算法" class="headerlink" title="方法一：kruskal算法"></a>方法一：kruskal算法</h1><h2 id="题目解析"><a href="#题目解析" class="headerlink" title="题目解析"></a>题目解析</h2><p>1）初始阶段，每个点互不相识，各自为一个孤岛。<br>2）以题设给定的“边”为入手，不断的通过整合边所连接两个点，让所有孤岛都连接到一起。<br>3）利用贪心算法，选择cost小的边为起点，遍历所有的边。<br>4）遍历的过程中，如果发现当前边所在的两个点在两个孤岛上，则将他们合并。这一步采用的并查集方法（即为不同的集合寻找father，father相同的节点，为同一个集合）。</p>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="comment">// 集合关系表，用一个数组来描述N个节点的集合关系；等同于树的数组表示方法。</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span>[] p;</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Node</span> </span>&#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">int</span> row;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">int</span> col;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">int</span> val;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">maximumMinimumPath</span><span class="params">(<span class="keyword">int</span> N, <span class="keyword">int</span>[][] connections)</span> </span>&#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">int</span> ans = <span class="number">0</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">int</span> pointNum = <span class="number">0</span>; <span class="comment">// 联通的边数</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">        p = <span class="keyword">new</span> <span class="keyword">int</span>[N + <span class="number">1</span>];</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= N; i++) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            p[i] = i;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">        PriorityQueue&lt;Node&gt; heap = <span class="keyword">new</span> PriorityQueue&lt;Node&gt;((Node o1, Node o2) -&gt; (o1.val - o2.val));</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span>[] connection : connections) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            Node node = <span class="keyword">new</span> Node();</span></pre></td></tr><tr><td class="code"><pre><span class="line">            node.row = connection[<span class="number">0</span>];</span></pre></td></tr><tr><td class="code"><pre><span class="line">            node.col = connection[<span class="number">1</span>];</span></pre></td></tr><tr><td class="code"><pre><span class="line">            node.val = connection[<span class="number">2</span>];</span></pre></td></tr><tr><td class="code"><pre><span class="line">            heap.add(node);</span></pre></td></tr><tr><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">while</span> (!heap.isEmpty()) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            Node conn = heap.poll();</span></pre></td></tr><tr><td class="code"><pre><span class="line">            <span class="keyword">int</span> px = find(conn.row), py = find(conn.col);</span></pre></td></tr><tr><td class="code"><pre><span class="line">            <span class="keyword">if</span>(px != py) &#123; <span class="comment">//如果该边所在的两个节点不在同一个集合</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">                p[px] = py; <span class="comment">//合并集合</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">                ans += conn.val;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                pointNum++;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                <span class="comment">//对于无向图的话，至少需要n-1条边可以使得图是联通的；</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">                <span class="comment">//如果对于有向图的话，至少需要n条边才可以使得图是联通的</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">                <span class="keyword">if</span>(pointNum == N - <span class="number">1</span>)&#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                    <span class="keyword">return</span> ans;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="comment">/**</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="comment">     * 不断向上找，直到找到下标和元素相同的点。</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="comment">     */</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">find</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">while</span> (x != p[x]) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            x = p[x];</span></pre></td></tr><tr><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">return</span> x;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">int</span>[][] connections = &#123;&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">5</span>&#125;, &#123;<span class="number">1</span>, <span class="number">3</span>, <span class="number">6</span>&#125;, &#123;<span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>&#125;&#125;;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        System.out.println(<span class="keyword">new</span> Solution().maximumMinimumPath(<span class="number">3</span>, connections));</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">        connections = <span class="keyword">new</span> <span class="keyword">int</span>[][]&#123;&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;, &#123;<span class="number">3</span>, <span class="number">4</span>, <span class="number">4</span>&#125;&#125;;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        System.out.println(<span class="keyword">new</span> Solution().maximumMinimumPath(<span class="number">4</span>, connections));</span></pre></td></tr><tr><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>数据结构与算法</category>
+      </categories>
+      <tags>
+        <tag>算法</tag>
+        <tag>并查集</tag>
       </tags>
   </entry>
 </search>
