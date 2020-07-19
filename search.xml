@@ -1,6 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>JVM内存结构</title>
+    <url>/2019/12/09/JVM%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/</url>
+    <content><![CDATA[<p>JVM 整体由 4 部分组成：</p>
+<blockquote>
+<p>加载：类加载器 ClassLoader<br>执行：执行引擎<br>内存：运行时数据区，Runtime Date Area<br>内存回收：垃圾回收</p>
+</blockquote>
+<p><img src="https://note.youdao.com/yws/public/resource/3c3ff9fb6ef41558966833fe2047f1d2/xmlnote/A6931B8E8C564071B2D085E64E1C0D21/28119" alt="alt"></p>
+]]></content>
+      <categories>
+        <category>JVM</category>
+      </categories>
+      <tags>
+        <tag>JVM</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MySQL主从复制原理</title>
+    <url>/2019/12/08/MySQL%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8E%9F%E7%90%86/</url>
+    <content><![CDATA[<p><strong>mysql主从复制需要三个线程，master（binlog dump thread）、slave（I/O thread 、SQL thread）。</strong></p>
+<h2 id="主从复制"><a href="#主从复制" class="headerlink" title="主从复制"></a>主从复制</h2><p><img src="https://user-gold-cdn.xitu.io/2019/4/2/169db46b2582abe2?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="alt"></p>
+<h3 id="master"><a href="#master" class="headerlink" title="master"></a>master</h3><blockquote>
+<p>（1）<strong>binlog dump线程</strong>：当主库中有数据更新时，那么主库就会根据按照设置的binlog格式，将此次更新的事件类型写入到主库的binlog文件中，此时主库会创建log dump线程通知slave有数据更新。</p>
+</blockquote>
+<h3 id="slave"><a href="#slave" class="headerlink" title="slave"></a>slave</h3><blockquote>
+<p>（2）<strong>I/O线程</strong>：该线程会连接到master，向log dump线程请求一份指定binlog文件位置的副本，并将请求回来的binlog存到本地的relay log中，relay log和binlog日志一样也是记录了数据更新的事件，它也是按照递增后缀名的方式，产生多个relay log（ host_name-relay-bin.000001）文件，slave会使用一个index文件（ host_name-relay-bin.index）来追踪当前正在使用的relay log文件。</p>
+</blockquote>
+<blockquote>
+<p>（3）<strong>SQL线程</strong>：该线程检测到relay log有更新后，会读取并在本地做redo操作，将发生在主库的事件在本地重新执行一遍，来保证主从数据同步。此外，如果一个relay log文件中的全部事件都执行完毕，那么SQL线程会自动将该relay log 文件删除掉。</p>
+</blockquote>
+<h2 id="半同步复制"><a href="#半同步复制" class="headerlink" title="半同步复制"></a>半同步复制</h2><p><code>如何解决MySQL主库宕机导致的数据丢失情况？</code></p>
+<p>使用半同步复制。在主库commit之前，需要先将binlog同步到从库，主库可以设置同步binlog的过期时间，在binlog复制到从库之后，从库后续会自行重放中继日志。不过这样也增加了客户端的延迟。另外这个需要安装下MySQL的插件。</p>
+<p><img src="https://note.youdao.com/yws/public/resource/c9fd2f2bbbcdfdd5b8c1ba3a4f857cda/xmlnote/38525674C8A541A68A3A321D08531D57/28242" alt="alt"></p>
+<p>MySQL的半同步插件为：semisync_xx.so</p>
+]]></content>
+      <categories>
+        <category>MySQL</category>
+      </categories>
+      <tags>
+        <tag>MySQL</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>MySQL规范</title>
     <url>/2019/12/08/MySQL%E8%A7%84%E8%8C%83/</url>
     <content><![CDATA[<h1 id="一、基础规范"><a href="#一、基础规范" class="headerlink" title="一、基础规范"></a>一、基础规范</h1><ul>
@@ -144,50 +186,75 @@
         <category>MySQL</category>
       </categories>
       <tags>
+        <tag>MySQL</tag>
         <tag>数据库</tag>
-        <tag>MySQL</tag>
       </tags>
   </entry>
   <entry>
-    <title>MySQL主从复制原理</title>
-    <url>/2019/12/08/MySQL%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8E%9F%E7%90%86/</url>
-    <content><![CDATA[<p><strong>mysql主从复制需要三个线程，master（binlog dump thread）、slave（I/O thread 、SQL thread）。</strong></p>
-<h2 id="主从复制"><a href="#主从复制" class="headerlink" title="主从复制"></a>主从复制</h2><p><img src="https://user-gold-cdn.xitu.io/2019/4/2/169db46b2582abe2?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="alt"></p>
-<h3 id="master"><a href="#master" class="headerlink" title="master"></a>master</h3><blockquote>
-<p>（1）<strong>binlog dump线程</strong>：当主库中有数据更新时，那么主库就会根据按照设置的binlog格式，将此次更新的事件类型写入到主库的binlog文件中，此时主库会创建log dump线程通知slave有数据更新。</p>
-</blockquote>
-<h3 id="slave"><a href="#slave" class="headerlink" title="slave"></a>slave</h3><blockquote>
-<p>（2）<strong>I/O线程</strong>：该线程会连接到master，向log dump线程请求一份指定binlog文件位置的副本，并将请求回来的binlog存到本地的relay log中，relay log和binlog日志一样也是记录了数据更新的事件，它也是按照递增后缀名的方式，产生多个relay log（ host_name-relay-bin.000001）文件，slave会使用一个index文件（ host_name-relay-bin.index）来追踪当前正在使用的relay log文件。</p>
-</blockquote>
+    <title>什么是二叉堆？</title>
+    <url>/2019/12/28/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%BA%8C%E5%8F%89%E5%A0%86/</url>
+    <content><![CDATA[<p>二叉堆本质上是一种完全二叉树，它分为两个类型：</p>
+<ul>
+<li>最大堆：最大堆任何一个父节点的值，都大于等于它左右孩子节点的值。</li>
+<li>最小堆：最小堆任何一个父节点的值，都小于等于它左右孩子节点的值。</li>
+</ul>
+<p>二叉堆的根节点叫做堆顶。</p>
+<p>最大堆和最小堆的特点，决定了在最大堆的堆顶是整个堆中的最大元素；最小堆的堆顶是整个堆中的最小元素。</p>
+<h1 id="堆的自我调整"><a href="#堆的自我调整" class="headerlink" title="堆的自我调整"></a>堆的自我调整</h1><p>对于二叉堆，如下有几种操作：</p>
+<p>插入节点<br>删除节点<br>构建二叉堆</p>
+<p>这几种操作都是基于堆的自我调整。</p>
+<p>下面让我们以最小堆为例，看一看二叉堆是如何进行自我调整的。</p>
+<h2 id="插入节点"><a href="#插入节点" class="headerlink" title="插入节点"></a>插入节点</h2><p>二叉堆的节点插入，插入位置是完全二叉树的最后一个位置。比如我们插入一个新节点，值是 0。</p>
+<p><img src="https://note.youdao.com/yws/public/resource/4ae50a760a9ea313e67f5b5d90a3275c/xmlnote/84AE54B6B30D48EF86427D9F4D47B8D7/13426" alt="alt"></p>
+<p>这时候，我们让节点0的它的父节点5做比较，如果0小于5，则让新节点“上浮”，和父节点交换位置。</p>
+<p><img src="https://note.youdao.com/yws/public/resource/4ae50a760a9ea313e67f5b5d90a3275c/xmlnote/5101CF2641B54C93A3F49DC31AE4E52D/13439" alt="alt"></p>
+<p>继续用节点0和父节点3做比较，如果0小于3，则让新节点继续“上浮”。</p>
+<p><img src="https://note.youdao.com/yws/public/resource/4ae50a760a9ea313e67f5b5d90a3275c/xmlnote/3F84F72235DC4CB29D433BBACACF113C/13428" alt="alt"></p>
+<p>继续比较，最终让新节点0上浮到了堆顶位置。</p>
+<p><img src="https://note.youdao.com/yws/public/resource/4ae50a760a9ea313e67f5b5d90a3275c/xmlnote/928F09279CFE4235BB9902BB509F6BE3/13427" alt="alt"></p>
+<h2 id="删除节点"><a href="#删除节点" class="headerlink" title="删除节点"></a>删除节点</h2><p>二叉堆的节点删除过程和插入过程正好相反，所删除的是处于堆顶的节点。比如我们删除最小堆的堆顶节点1。</p>
+<p><img src="https://note.youdao.com/yws/public/resource/4ae50a760a9ea313e67f5b5d90a3275c/xmlnote/A92E258C406846D1BF5B22E6CA2F59CA/13432" alt="alt"></p>
+<p>这时候，为了维持完全二叉树的结构，我们把堆的最后一个节点10补到原本堆顶的位置。</p>
+<p><img src="https://note.youdao.com/yws/public/resource/4ae50a760a9ea313e67f5b5d90a3275c/xmlnote/1AA03D43DE0C425781B0527BAB5443FC/13430" alt="alt"></p>
+<p>接下来我们让移动到堆顶的节点10和它的左右孩子进行比较，如果左右孩子中最小的一个（显然是节点2）比节点10小，那么让节点10“下沉”。</p>
+<p><img src="https://note.youdao.com/yws/public/resource/4ae50a760a9ea313e67f5b5d90a3275c/xmlnote/CE53D64C4BC24624A2DB662314D6C117/13429" alt="alt"></p>
+<p>继续让节点10和它的左右孩子做比较，左右孩子中最小的是节点7，由于10大于7，让节点10继续“下沉”。</p>
+<p><img src="https://note.youdao.com/yws/public/resource/4ae50a760a9ea313e67f5b5d90a3275c/xmlnote/D124AEEB4FC44EF7BB91AD916F97BF70/13431" alt="alt"></p>
+<p>这样一来，二叉堆重新得到了调整。</p>
+<h2 id="构建二叉堆"><a href="#构建二叉堆" class="headerlink" title="构建二叉堆"></a>构建二叉堆</h2><p>构建二叉堆，也就是把一个无序的完全二叉树调整为二叉堆，本质上就是让所有非叶子节点依次下沉。</p>
+<p>我们举一个无序完全二叉树的例子：</p>
+<p><img src="https://note.youdao.com/yws/public/resource/4ae50a760a9ea313e67f5b5d90a3275c/xmlnote/60E197D212E3403EBD3E82928385EA7D/13433" alt="alt"></p>
+<p>首先，我们从最后一个非叶子节点开始，也就是从节点10开始。如果节点10大于它左右孩子中最小的一个，则节点10下沉。</p>
+<p><img src="https://note.youdao.com/yws/public/resource/4ae50a760a9ea313e67f5b5d90a3275c/xmlnote/FC0FAC5C07824E1286FEE14265ECB35A/13436" alt="alt"></p>
+<p>接下来轮到节点3，如果节点3大于它左右孩子中最小的一个，则节点3下沉。</p>
+<p><img src="https://note.youdao.com/yws/public/resource/4ae50a760a9ea313e67f5b5d90a3275c/xmlnote/0D9B25283274411591EC0AF71A2D5E25/13437" alt="alt"></p>
+<p>接下来轮到节点1，如果节点1大于它左右孩子中最小的一个，则节点1下沉。事实上节点1小于它的左右孩子，所以不用改变。</p>
+<p>接下来轮到节点7，如果节点7大于它左右孩子中最小的一个，则节点7下沉。</p>
+<p><img src="https://note.youdao.com/yws/public/resource/4ae50a760a9ea313e67f5b5d90a3275c/xmlnote/33E7D360D6D84AD88D9E388875C17A7E/13438" alt="alt"></p>
+<p>节点7继续比较，继续下沉。</p>
+<p><img src="https://note.youdao.com/yws/public/resource/4ae50a760a9ea313e67f5b5d90a3275c/xmlnote/55F6C3F67ECD466684E080E2AEF43685/13435" alt="alt"></p>
+<p>这样一来，一颗无序的完全二叉树就构建成了一个最小堆。</p>
+<h1 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h1><p>堆的插入和删除操作时间复杂度是O(logn)。构建堆的时间复杂度是O(n)。</p>
+<p>构建堆的复杂度推导：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">建立堆的顺序是bottom-top的。 </span></pre></td></tr><tr><td class="code"><pre><span class="line">正确的证明方法应当如下：</span></pre></td></tr><tr><td class="code"><pre><span class="line">具有n个元素的平衡二叉树，树高为㏒n，我们设这个变量为h。</span></pre></td></tr><tr><td class="code"><pre><span class="line">最下层非叶节点的元素，只需做一次线性运算便可以确定大根，而这一层具有2^(h-1)个元素，我们假定O(1)&#x3D;1，那么这一层元素所需时间为2^(h-1) × 1。</span></pre></td></tr><tr><td class="code"><pre><span class="line">由于是bottom-top建立堆，因此在调整上层元素的时候，并不需要同下层所有元素做比较，只需要同其中之一分支作比较，而作比较次数则是树的高度减去当前节点的高度。因此，第x层元素的计算量为2^(x-1) × (h-x)。</span></pre></td></tr><tr><td class="code"><pre><span class="line">由以上通项公式可得知，构造树高为h的二叉堆的精确时间复杂度为： </span></pre></td></tr><tr><td class="code"><pre><span class="line">S &#x3D; 2^(h-1) × 1 + 2^(h-2) × 2 + …… +1 × (h-1) ①</span></pre></td></tr><tr><td class="code"><pre><span class="line">通过观察第四步得出的公式可知，该求和公式为等差数列和等比数列的乘积，因此用错位想减发求解，给公式左右两侧同时乘以2，可知： </span></pre></td></tr><tr><td class="code"><pre><span class="line">2S &#x3D; 2^h × 1 + 2^(h-1) × 2+ …… +2 × (h-1) ②</span></pre></td></tr><tr><td class="code"><pre><span class="line">用②减去①可知： S &#x3D;2^h +2^h-1+2^h-2......2^1- h +1&#x3D;2^(h+1)-h+1 ③</span></pre></td></tr><tr><td class="code"><pre><span class="line">将h &#x3D; ㏒n 带入③，得出如下结论：</span></pre></td></tr><tr><td class="code"><pre><span class="line">S &#x3D; 2*n - ㏒n -1 &#x3D; O(n)</span></pre></td></tr></table></figure>
+<p>结论：<code>构造二叉堆的时间复杂度为线性得证</code>。</p>
+<h1 id="堆的代码实现"><a href="#堆的代码实现" class="headerlink" title="堆的代码实现"></a>堆的代码实现</h1><p>二叉堆虽然是一颗完全二叉树，但它的存储方式并不是链式存储，而是顺序存储。换句话说，二叉堆的所有节点都存储在数组当中。</p>
+<p><img src="https://note.youdao.com/yws/public/resource/4ae50a760a9ea313e67f5b5d90a3275c/xmlnote/CF322829B30948DFA41618185575F45A/13434" alt="alt"></p>
 <blockquote>
-<p>（3）<strong>SQL线程</strong>：该线程检测到relay log有更新后，会读取并在本地做redo操作，将发生在主库的事件在本地重新执行一遍，来保证主从数据同步。此外，如果一个relay log文件中的全部事件都执行完毕，那么SQL线程会自动将该relay log 文件删除掉。</p>
+<p>数组中，在没有左右指针的情况下，如何定位到一个父节点的左孩子和右孩子呢？</p>
 </blockquote>
-<h2 id="半同步复制"><a href="#半同步复制" class="headerlink" title="半同步复制"></a>半同步复制</h2><p><code>如何解决MySQL主库宕机导致的数据丢失情况？</code></p>
-<p>使用半同步复制。在主库commit之前，需要先将binlog同步到从库，主库可以设置同步binlog的过期时间，在binlog复制到从库之后，从库后续会自行重放中继日志。不过这样也增加了客户端的延迟。另外这个需要安装下MySQL的插件。</p>
-<p><img src="https://note.youdao.com/yws/public/resource/c9fd2f2bbbcdfdd5b8c1ba3a4f857cda/xmlnote/38525674C8A541A68A3A321D08531D57/28242" alt="alt"></p>
-<p>MySQL的半同步插件为：semisync_xx.so</p>
+<p>像图中那样，我们可以依靠数组下标来计算。</p>
+<p>假设父节点的下标是parent，那么它的左孩子下标就是 2<em>parent+1；它的右孩子下标就是  2</em>parent+2 。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Arrays;</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HeapOperator</span> </span>&#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="comment">/**</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="comment">     * 上浮调整</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="comment">     * <span class="doctag">@param</span> array  待调整的堆</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="comment">     */</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">upAdjust</span><span class="params">(<span class="keyword">int</span>[] array)</span> </span>&#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="comment">//最后一个节点 子节点索引位置</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">int</span> childIndex = array.length - <span class="number">1</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="comment">//父节点</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">int</span> parentIndex = (childIndex - <span class="number">1</span>) / <span class="number">2</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="comment">// temp保存插入的叶子节点值，用于最后的赋值</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">int</span> temp = array[childIndex];</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">while</span> (childIndex &gt; <span class="number">0</span> &amp;&amp; temp &lt; array[parentIndex]) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            <span class="comment">//无需真正交换，单向赋值即可</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">            array[childIndex] = array[parentIndex];</span></pre></td></tr><tr><td class="code"><pre><span class="line">            childIndex = parentIndex;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            parentIndex = (childIndex - <span class="number">1</span>) / <span class="number">2</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        array[childIndex] = temp;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="comment">/**</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="comment">     * 下沉调整</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="comment">     * <span class="doctag">@param</span> array  待调整的堆</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="comment">     * <span class="doctag">@param</span> parentIndex 要下沉的父节点</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="comment">     * <span class="doctag">@param</span> length 堆的有效大小</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="comment">     */</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">downAdjust</span><span class="params">(<span class="keyword">int</span>[] array, <span class="keyword">int</span> parentIndex, <span class="keyword">int</span> length)</span> </span>&#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="comment">// temp保存父节点值，用于最后的赋值</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">int</span> temp = array[parentIndex];</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">int</span> childIndex = parentIndex * <span class="number">2</span> + <span class="number">1</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">while</span> (childIndex &lt; length) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            <span class="comment">// 如果有右孩子，且右孩子小于左孩子的值，则定位到右孩子</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">            <span class="keyword">if</span> (childIndex + <span class="number">1</span> &lt; length &amp;&amp; array[childIndex + <span class="number">1</span>] &lt; array[childIndex]) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                childIndex++;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            <span class="comment">// 如果父节点小于任何一个孩子的值，直接跳出</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">            <span class="keyword">if</span> (temp &lt;= array[childIndex]) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                <span class="keyword">break</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            <span class="comment">//无需真正交换，单向赋值即可</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">            array[parentIndex] = array[childIndex];</span></pre></td></tr><tr><td class="code"><pre><span class="line">            parentIndex = childIndex;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            childIndex = childIndex * <span class="number">2</span> + <span class="number">1</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        array[parentIndex] = temp;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="comment">/**</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="comment">     * 构建堆</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="comment">     *</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="comment">     * <span class="doctag">@param</span> array 待调整的堆</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="comment">     */</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">buildHeap</span><span class="params">(<span class="keyword">int</span>[] array)</span> </span>&#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="comment">// 从最后一个非叶子节点开始，依次下沉调整</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = array.length/<span class="number">2</span>; i &gt;=<span class="number">0</span> ; i--) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            downAdjust(array, i, array.length);</span></pre></td></tr><tr><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">int</span>[] array = <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">1</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">6</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">0</span>&#125;;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        upAdjust(array);</span></pre></td></tr><tr><td class="code"><pre><span class="line">        System.out.println(Arrays.toString(array));</span></pre></td></tr><tr><td class="code"><pre><span class="line">        array = <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">7</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">10</span>, <span class="number">5</span>, <span class="number">2</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">6</span>&#125;;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        buildHeap(array);</span></pre></td></tr><tr><td class="code"><pre><span class="line">        System.out.println(Arrays.toString(array));</span></pre></td></tr><tr><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
+
+
+<p>二叉堆是实现堆排序和优先级队列的基础。</p>
 ]]></content>
       <categories>
-        <category>MySQL</category>
+        <category>数据结构与算法</category>
       </categories>
       <tags>
-        <tag>MySQL</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>JVM内存结构</title>
-    <url>/2019/12/09/JVM%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/</url>
-    <content><![CDATA[<p>JVM 整体由 4 部分组成：</p>
-<blockquote>
-<p>加载：类加载器 ClassLoader<br>执行：执行引擎<br>内存：运行时数据区，Runtime Date Area<br>内存回收：垃圾回收</p>
-</blockquote>
-<p><img src="https://note.youdao.com/yws/public/resource/3c3ff9fb6ef41558966833fe2047f1d2/xmlnote/A6931B8E8C564071B2D085E64E1C0D21/28119" alt="alt"></p>
-]]></content>
-      <categories>
-        <category>JVM</category>
-      </categories>
-      <tags>
-        <tag>JVM</tag>
+        <tag>数据结构</tag>
       </tags>
   </entry>
   <entry>
@@ -292,73 +359,6 @@
       </tags>
   </entry>
   <entry>
-    <title>什么是二叉堆？</title>
-    <url>/2019/12/28/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%BA%8C%E5%8F%89%E5%A0%86/</url>
-    <content><![CDATA[<p>二叉堆本质上是一种完全二叉树，它分为两个类型：</p>
-<ul>
-<li>最大堆：最大堆任何一个父节点的值，都大于等于它左右孩子节点的值。</li>
-<li>最小堆：最小堆任何一个父节点的值，都小于等于它左右孩子节点的值。</li>
-</ul>
-<p>二叉堆的根节点叫做堆顶。</p>
-<p>最大堆和最小堆的特点，决定了在最大堆的堆顶是整个堆中的最大元素；最小堆的堆顶是整个堆中的最小元素。</p>
-<h1 id="堆的自我调整"><a href="#堆的自我调整" class="headerlink" title="堆的自我调整"></a>堆的自我调整</h1><p>对于二叉堆，如下有几种操作：</p>
-<p>插入节点<br>删除节点<br>构建二叉堆</p>
-<p>这几种操作都是基于堆的自我调整。</p>
-<p>下面让我们以最小堆为例，看一看二叉堆是如何进行自我调整的。</p>
-<h2 id="插入节点"><a href="#插入节点" class="headerlink" title="插入节点"></a>插入节点</h2><p>二叉堆的节点插入，插入位置是完全二叉树的最后一个位置。比如我们插入一个新节点，值是 0。</p>
-<p><img src="https://note.youdao.com/yws/public/resource/4ae50a760a9ea313e67f5b5d90a3275c/xmlnote/84AE54B6B30D48EF86427D9F4D47B8D7/13426" alt="alt"></p>
-<p>这时候，我们让节点0的它的父节点5做比较，如果0小于5，则让新节点“上浮”，和父节点交换位置。</p>
-<p><img src="https://note.youdao.com/yws/public/resource/4ae50a760a9ea313e67f5b5d90a3275c/xmlnote/5101CF2641B54C93A3F49DC31AE4E52D/13439" alt="alt"></p>
-<p>继续用节点0和父节点3做比较，如果0小于3，则让新节点继续“上浮”。</p>
-<p><img src="https://note.youdao.com/yws/public/resource/4ae50a760a9ea313e67f5b5d90a3275c/xmlnote/3F84F72235DC4CB29D433BBACACF113C/13428" alt="alt"></p>
-<p>继续比较，最终让新节点0上浮到了堆顶位置。</p>
-<p><img src="https://note.youdao.com/yws/public/resource/4ae50a760a9ea313e67f5b5d90a3275c/xmlnote/928F09279CFE4235BB9902BB509F6BE3/13427" alt="alt"></p>
-<h2 id="删除节点"><a href="#删除节点" class="headerlink" title="删除节点"></a>删除节点</h2><p>二叉堆的节点删除过程和插入过程正好相反，所删除的是处于堆顶的节点。比如我们删除最小堆的堆顶节点1。</p>
-<p><img src="https://note.youdao.com/yws/public/resource/4ae50a760a9ea313e67f5b5d90a3275c/xmlnote/A92E258C406846D1BF5B22E6CA2F59CA/13432" alt="alt"></p>
-<p>这时候，为了维持完全二叉树的结构，我们把堆的最后一个节点10补到原本堆顶的位置。</p>
-<p><img src="https://note.youdao.com/yws/public/resource/4ae50a760a9ea313e67f5b5d90a3275c/xmlnote/1AA03D43DE0C425781B0527BAB5443FC/13430" alt="alt"></p>
-<p>接下来我们让移动到堆顶的节点10和它的左右孩子进行比较，如果左右孩子中最小的一个（显然是节点2）比节点10小，那么让节点10“下沉”。</p>
-<p><img src="https://note.youdao.com/yws/public/resource/4ae50a760a9ea313e67f5b5d90a3275c/xmlnote/CE53D64C4BC24624A2DB662314D6C117/13429" alt="alt"></p>
-<p>继续让节点10和它的左右孩子做比较，左右孩子中最小的是节点7，由于10大于7，让节点10继续“下沉”。</p>
-<p><img src="https://note.youdao.com/yws/public/resource/4ae50a760a9ea313e67f5b5d90a3275c/xmlnote/D124AEEB4FC44EF7BB91AD916F97BF70/13431" alt="alt"></p>
-<p>这样一来，二叉堆重新得到了调整。</p>
-<h2 id="构建二叉堆"><a href="#构建二叉堆" class="headerlink" title="构建二叉堆"></a>构建二叉堆</h2><p>构建二叉堆，也就是把一个无序的完全二叉树调整为二叉堆，本质上就是让所有非叶子节点依次下沉。</p>
-<p>我们举一个无序完全二叉树的例子：</p>
-<p><img src="https://note.youdao.com/yws/public/resource/4ae50a760a9ea313e67f5b5d90a3275c/xmlnote/60E197D212E3403EBD3E82928385EA7D/13433" alt="alt"></p>
-<p>首先，我们从最后一个非叶子节点开始，也就是从节点10开始。如果节点10大于它左右孩子中最小的一个，则节点10下沉。</p>
-<p><img src="https://note.youdao.com/yws/public/resource/4ae50a760a9ea313e67f5b5d90a3275c/xmlnote/FC0FAC5C07824E1286FEE14265ECB35A/13436" alt="alt"></p>
-<p>接下来轮到节点3，如果节点3大于它左右孩子中最小的一个，则节点3下沉。</p>
-<p><img src="https://note.youdao.com/yws/public/resource/4ae50a760a9ea313e67f5b5d90a3275c/xmlnote/0D9B25283274411591EC0AF71A2D5E25/13437" alt="alt"></p>
-<p>接下来轮到节点1，如果节点1大于它左右孩子中最小的一个，则节点1下沉。事实上节点1小于它的左右孩子，所以不用改变。</p>
-<p>接下来轮到节点7，如果节点7大于它左右孩子中最小的一个，则节点7下沉。</p>
-<p><img src="https://note.youdao.com/yws/public/resource/4ae50a760a9ea313e67f5b5d90a3275c/xmlnote/33E7D360D6D84AD88D9E388875C17A7E/13438" alt="alt"></p>
-<p>节点7继续比较，继续下沉。</p>
-<p><img src="https://note.youdao.com/yws/public/resource/4ae50a760a9ea313e67f5b5d90a3275c/xmlnote/55F6C3F67ECD466684E080E2AEF43685/13435" alt="alt"></p>
-<p>这样一来，一颗无序的完全二叉树就构建成了一个最小堆。</p>
-<h1 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h1><p>堆的插入和删除操作时间复杂度是O(logn)。构建堆的时间复杂度是O(n)。</p>
-<p>构建堆的复杂度推导：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">建立堆的顺序是bottom-top的。 </span></pre></td></tr><tr><td class="code"><pre><span class="line">正确的证明方法应当如下：</span></pre></td></tr><tr><td class="code"><pre><span class="line">具有n个元素的平衡二叉树，树高为㏒n，我们设这个变量为h。</span></pre></td></tr><tr><td class="code"><pre><span class="line">最下层非叶节点的元素，只需做一次线性运算便可以确定大根，而这一层具有2^(h-1)个元素，我们假定O(1)&#x3D;1，那么这一层元素所需时间为2^(h-1) × 1。</span></pre></td></tr><tr><td class="code"><pre><span class="line">由于是bottom-top建立堆，因此在调整上层元素的时候，并不需要同下层所有元素做比较，只需要同其中之一分支作比较，而作比较次数则是树的高度减去当前节点的高度。因此，第x层元素的计算量为2^(x-1) × (h-x)。</span></pre></td></tr><tr><td class="code"><pre><span class="line">由以上通项公式可得知，构造树高为h的二叉堆的精确时间复杂度为： </span></pre></td></tr><tr><td class="code"><pre><span class="line">S &#x3D; 2^(h-1) × 1 + 2^(h-2) × 2 + …… +1 × (h-1) ①</span></pre></td></tr><tr><td class="code"><pre><span class="line">通过观察第四步得出的公式可知，该求和公式为等差数列和等比数列的乘积，因此用错位想减发求解，给公式左右两侧同时乘以2，可知： </span></pre></td></tr><tr><td class="code"><pre><span class="line">2S &#x3D; 2^h × 1 + 2^(h-1) × 2+ …… +2 × (h-1) ②</span></pre></td></tr><tr><td class="code"><pre><span class="line">用②减去①可知： S &#x3D;2^h +2^h-1+2^h-2......2^1- h +1&#x3D;2^(h+1)-h+1 ③</span></pre></td></tr><tr><td class="code"><pre><span class="line">将h &#x3D; ㏒n 带入③，得出如下结论：</span></pre></td></tr><tr><td class="code"><pre><span class="line">S &#x3D; 2*n - ㏒n -1 &#x3D; O(n)</span></pre></td></tr></table></figure>
-<p>结论：<code>构造二叉堆的时间复杂度为线性得证</code>。</p>
-<h1 id="堆的代码实现"><a href="#堆的代码实现" class="headerlink" title="堆的代码实现"></a>堆的代码实现</h1><p>二叉堆虽然是一颗完全二叉树，但它的存储方式并不是链式存储，而是顺序存储。换句话说，二叉堆的所有节点都存储在数组当中。</p>
-<p><img src="https://note.youdao.com/yws/public/resource/4ae50a760a9ea313e67f5b5d90a3275c/xmlnote/CF322829B30948DFA41618185575F45A/13434" alt="alt"></p>
-<blockquote>
-<p>数组中，在没有左右指针的情况下，如何定位到一个父节点的左孩子和右孩子呢？</p>
-</blockquote>
-<p>像图中那样，我们可以依靠数组下标来计算。</p>
-<p>假设父节点的下标是parent，那么它的左孩子下标就是 2<em>parent+1；它的右孩子下标就是  2</em>parent+2 。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Arrays;</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HeapOperator</span> </span>&#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="comment">/**</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="comment">     * 上浮调整</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="comment">     * <span class="doctag">@param</span> array  待调整的堆</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="comment">     */</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">upAdjust</span><span class="params">(<span class="keyword">int</span>[] array)</span> </span>&#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="comment">//最后一个节点 子节点索引位置</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">int</span> childIndex = array.length - <span class="number">1</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="comment">//父节点</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">int</span> parentIndex = (childIndex - <span class="number">1</span>) / <span class="number">2</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="comment">// temp保存插入的叶子节点值，用于最后的赋值</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">int</span> temp = array[childIndex];</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">while</span> (childIndex &gt; <span class="number">0</span> &amp;&amp; temp &lt; array[parentIndex]) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            <span class="comment">//无需真正交换，单向赋值即可</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">            array[childIndex] = array[parentIndex];</span></pre></td></tr><tr><td class="code"><pre><span class="line">            childIndex = parentIndex;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            parentIndex = (childIndex - <span class="number">1</span>) / <span class="number">2</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        array[childIndex] = temp;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="comment">/**</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="comment">     * 下沉调整</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="comment">     * <span class="doctag">@param</span> array  待调整的堆</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="comment">     * <span class="doctag">@param</span> parentIndex 要下沉的父节点</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="comment">     * <span class="doctag">@param</span> length 堆的有效大小</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="comment">     */</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">downAdjust</span><span class="params">(<span class="keyword">int</span>[] array, <span class="keyword">int</span> parentIndex, <span class="keyword">int</span> length)</span> </span>&#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="comment">// temp保存父节点值，用于最后的赋值</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">int</span> temp = array[parentIndex];</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">int</span> childIndex = parentIndex * <span class="number">2</span> + <span class="number">1</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">while</span> (childIndex &lt; length) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            <span class="comment">// 如果有右孩子，且右孩子小于左孩子的值，则定位到右孩子</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">            <span class="keyword">if</span> (childIndex + <span class="number">1</span> &lt; length &amp;&amp; array[childIndex + <span class="number">1</span>] &lt; array[childIndex]) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                childIndex++;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            <span class="comment">// 如果父节点小于任何一个孩子的值，直接跳出</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">            <span class="keyword">if</span> (temp &lt;= array[childIndex]) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                <span class="keyword">break</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            <span class="comment">//无需真正交换，单向赋值即可</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">            array[parentIndex] = array[childIndex];</span></pre></td></tr><tr><td class="code"><pre><span class="line">            parentIndex = childIndex;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            childIndex = childIndex * <span class="number">2</span> + <span class="number">1</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        array[parentIndex] = temp;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="comment">/**</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="comment">     * 构建堆</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="comment">     *</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="comment">     * <span class="doctag">@param</span> array 待调整的堆</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="comment">     */</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">buildHeap</span><span class="params">(<span class="keyword">int</span>[] array)</span> </span>&#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="comment">// 从最后一个非叶子节点开始，依次下沉调整</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = array.length/<span class="number">2</span>; i &gt;=<span class="number">0</span> ; i--) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            downAdjust(array, i, array.length);</span></pre></td></tr><tr><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">int</span>[] array = <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">1</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">6</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">0</span>&#125;;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        upAdjust(array);</span></pre></td></tr><tr><td class="code"><pre><span class="line">        System.out.println(Arrays.toString(array));</span></pre></td></tr><tr><td class="code"><pre><span class="line">        array = <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">7</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">10</span>, <span class="number">5</span>, <span class="number">2</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">6</span>&#125;;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        buildHeap(array);</span></pre></td></tr><tr><td class="code"><pre><span class="line">        System.out.println(Arrays.toString(array));</span></pre></td></tr><tr><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
-
-
-<p>二叉堆是实现堆排序和优先级队列的基础。</p>
-]]></content>
-      <categories>
-        <category>数据结构与算法</category>
-      </categories>
-      <tags>
-        <tag>数据结构</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>895.最大频率栈</title>
     <url>/2020/07/07/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/leetcode/%E6%9C%80%E5%A4%A7%E9%A2%91%E7%8E%87%E6%A0%88/</url>
     <content><![CDATA[<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p>实现 <code>FreqStack</code>，模拟类似栈的数据结构的操作的一个类。</p>
@@ -394,36 +394,6 @@
       <tags>
         <tag>算法</tag>
         <tag>栈</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>1135. 最低成本联通所有城市</title>
-    <url>/2020/07/08/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/leetcode/%E5%B9%B6%E6%9F%A5%E9%9B%86/%E6%9C%80%E4%BD%8E%E6%88%90%E6%9C%AC%E8%81%94%E9%80%9A%E6%89%80%E6%9C%89%E5%9F%8E%E5%B8%82/</url>
-    <content><![CDATA[<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p>想象一下你是个城市基建规划者，地图上有 N 座城市，它们按以 1 到 N 的次序编号。</p>
-<p>给你一些可连接的选项 conections，其中每个选项 conections[i] = [city1, city2, cost] 表示将城市 city1 和城市 city2 连接所要的成本。（连接是双向的，也就是说城市 city1 和城市 city2 相连也同样意味着城市 city2 和城市 city1 相连）。</p>
-<p>返回使得每对城市间都存在将它们连接在一起的连通路径（可能长度为 1 的）最小成本。该最小成本应该是所用全部连接代价的综合。如果根据已知条件无法完成该项任务，则请你返回 -1。</p>
-<p><strong>示例 1：</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：N &#x3D; 3, conections &#x3D; [[1,2,5],[1,3,6],[2,3,1]]</span></pre></td></tr><tr><td class="code"><pre><span class="line">输出：6</span></pre></td></tr><tr><td class="code"><pre><span class="line">解释：</span></pre></td></tr><tr><td class="code"><pre><span class="line">选出任意 2 条边都可以连接所有城市，我们从中选取成本最小的 2 条。</span></pre></td></tr></table></figure>
-
-<p><strong>示例 2：</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：N &#x3D; 4, conections &#x3D; [[1,2,3],[3,4,4]]</span></pre></td></tr><tr><td class="code"><pre><span class="line">输出：-1</span></pre></td></tr><tr><td class="code"><pre><span class="line">解释： </span></pre></td></tr><tr><td class="code"><pre><span class="line">即使连通所有的边，也无法连接所有城市。</span></pre></td></tr></table></figure>
-
-<p>提示：</p>
-<ol>
-<li><code>1 &lt;= N &lt;= 10000</code></li>
-<li><code>1 &lt;= conections.length &lt;= 10000</code></li>
-<li><code>1 &lt;= conections[i][0], conections[i][1] &lt;= N</code></li>
-<li><code>0 &lt;= conections[i][2] &lt;= 10^5</code></li>
-<li><code>conections[i][0] != conections[i][1]</code></li>
-</ol>
-<h1 id="方法一：kruskal算法"><a href="#方法一：kruskal算法" class="headerlink" title="方法一：kruskal算法"></a>方法一：kruskal算法</h1><h2 id="题目解析"><a href="#题目解析" class="headerlink" title="题目解析"></a>题目解析</h2><p>1）初始阶段，每个点互不相识，各自为一个孤岛。<br>2）以题设给定的“边”为入手，不断的通过整合边所连接两个点，让所有孤岛都连接到一起。<br>3）利用贪心算法，选择cost小的边为起点，遍历所有的边。<br>4）遍历的过程中，如果发现当前边所在的两个点在两个孤岛上，则将他们合并。这一步采用的并查集方法（即为不同的集合寻找father，father相同的节点，为同一个集合）。</p>
-<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="comment">// 集合关系表，用一个数组来描述N个节点的集合关系；等同于树的数组表示方法。</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span>[] p;</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Node</span> </span>&#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">int</span> row;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">int</span> col;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">int</span> val;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">maximumMinimumPath</span><span class="params">(<span class="keyword">int</span> N, <span class="keyword">int</span>[][] connections)</span> </span>&#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">int</span> ans = <span class="number">0</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">int</span> pointNum = <span class="number">0</span>; <span class="comment">// 联通的边数</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">        p = <span class="keyword">new</span> <span class="keyword">int</span>[N + <span class="number">1</span>];</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= N; i++) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            p[i] = i;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">        PriorityQueue&lt;Node&gt; heap = <span class="keyword">new</span> PriorityQueue&lt;Node&gt;((Node o1, Node o2) -&gt; (o1.val - o2.val));</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span>[] connection : connections) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            Node node = <span class="keyword">new</span> Node();</span></pre></td></tr><tr><td class="code"><pre><span class="line">            node.row = connection[<span class="number">0</span>];</span></pre></td></tr><tr><td class="code"><pre><span class="line">            node.col = connection[<span class="number">1</span>];</span></pre></td></tr><tr><td class="code"><pre><span class="line">            node.val = connection[<span class="number">2</span>];</span></pre></td></tr><tr><td class="code"><pre><span class="line">            heap.add(node);</span></pre></td></tr><tr><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">while</span> (!heap.isEmpty()) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            Node conn = heap.poll();</span></pre></td></tr><tr><td class="code"><pre><span class="line">            <span class="keyword">int</span> px = find(conn.row), py = find(conn.col);</span></pre></td></tr><tr><td class="code"><pre><span class="line">            <span class="keyword">if</span>(px != py) &#123; <span class="comment">//如果该边所在的两个节点不在同一个集合</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">                p[px] = py; <span class="comment">//合并集合</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">                ans += conn.val;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                pointNum++;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                <span class="comment">//对于无向图的话，至少需要n-1条边可以使得图是联通的；</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">                <span class="comment">//如果对于有向图的话，至少需要n条边才可以使得图是联通的</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">                <span class="keyword">if</span>(pointNum == N - <span class="number">1</span>)&#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                    <span class="keyword">return</span> ans;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="comment">/**</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="comment">     * 不断向上找，直到找到下标和元素相同的点。</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="comment">     */</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">find</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">while</span> (x != p[x]) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            x = p[x];</span></pre></td></tr><tr><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">return</span> x;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">int</span>[][] connections = &#123;&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">5</span>&#125;, &#123;<span class="number">1</span>, <span class="number">3</span>, <span class="number">6</span>&#125;, &#123;<span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>&#125;&#125;;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        System.out.println(<span class="keyword">new</span> Solution().maximumMinimumPath(<span class="number">3</span>, connections));</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">        connections = <span class="keyword">new</span> <span class="keyword">int</span>[][]&#123;&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;, &#123;<span class="number">3</span>, <span class="number">4</span>, <span class="number">4</span>&#125;&#125;;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        System.out.println(<span class="keyword">new</span> Solution().maximumMinimumPath(<span class="number">4</span>, connections));</span></pre></td></tr><tr><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>数据结构与算法</category>
-      </categories>
-      <tags>
-        <tag>算法</tag>
-        <tag>并查集</tag>
       </tags>
   </entry>
   <entry>
@@ -563,6 +533,36 @@
       </categories>
       <tags>
         <tag>算法</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>1135. 最低成本联通所有城市</title>
+    <url>/2020/07/08/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/leetcode/%E5%B9%B6%E6%9F%A5%E9%9B%86/%E6%9C%80%E4%BD%8E%E6%88%90%E6%9C%AC%E8%81%94%E9%80%9A%E6%89%80%E6%9C%89%E5%9F%8E%E5%B8%82/</url>
+    <content><![CDATA[<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p>想象一下你是个城市基建规划者，地图上有 N 座城市，它们按以 1 到 N 的次序编号。</p>
+<p>给你一些可连接的选项 conections，其中每个选项 conections[i] = [city1, city2, cost] 表示将城市 city1 和城市 city2 连接所要的成本。（连接是双向的，也就是说城市 city1 和城市 city2 相连也同样意味着城市 city2 和城市 city1 相连）。</p>
+<p>返回使得每对城市间都存在将它们连接在一起的连通路径（可能长度为 1 的）最小成本。该最小成本应该是所用全部连接代价的综合。如果根据已知条件无法完成该项任务，则请你返回 -1。</p>
+<p><strong>示例 1：</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：N &#x3D; 3, conections &#x3D; [[1,2,5],[1,3,6],[2,3,1]]</span></pre></td></tr><tr><td class="code"><pre><span class="line">输出：6</span></pre></td></tr><tr><td class="code"><pre><span class="line">解释：</span></pre></td></tr><tr><td class="code"><pre><span class="line">选出任意 2 条边都可以连接所有城市，我们从中选取成本最小的 2 条。</span></pre></td></tr></table></figure>
+
+<p><strong>示例 2：</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：N &#x3D; 4, conections &#x3D; [[1,2,3],[3,4,4]]</span></pre></td></tr><tr><td class="code"><pre><span class="line">输出：-1</span></pre></td></tr><tr><td class="code"><pre><span class="line">解释： </span></pre></td></tr><tr><td class="code"><pre><span class="line">即使连通所有的边，也无法连接所有城市。</span></pre></td></tr></table></figure>
+
+<p>提示：</p>
+<ol>
+<li><code>1 &lt;= N &lt;= 10000</code></li>
+<li><code>1 &lt;= conections.length &lt;= 10000</code></li>
+<li><code>1 &lt;= conections[i][0], conections[i][1] &lt;= N</code></li>
+<li><code>0 &lt;= conections[i][2] &lt;= 10^5</code></li>
+<li><code>conections[i][0] != conections[i][1]</code></li>
+</ol>
+<h1 id="方法一：kruskal算法"><a href="#方法一：kruskal算法" class="headerlink" title="方法一：kruskal算法"></a>方法一：kruskal算法</h1><h2 id="题目解析"><a href="#题目解析" class="headerlink" title="题目解析"></a>题目解析</h2><p>1）初始阶段，每个点互不相识，各自为一个孤岛。<br>2）以题设给定的“边”为入手，不断的通过整合边所连接两个点，让所有孤岛都连接到一起。<br>3）利用贪心算法，选择cost小的边为起点，遍历所有的边。<br>4）遍历的过程中，如果发现当前边所在的两个点在两个孤岛上，则将他们合并。这一步采用的并查集方法（即为不同的集合寻找father，father相同的节点，为同一个集合）。</p>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="comment">// 集合关系表，用一个数组来描述N个节点的集合关系；等同于树的数组表示方法。</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span>[] p;</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Node</span> </span>&#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">int</span> row;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">int</span> col;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">int</span> val;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">maximumMinimumPath</span><span class="params">(<span class="keyword">int</span> N, <span class="keyword">int</span>[][] connections)</span> </span>&#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">int</span> ans = <span class="number">0</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">int</span> pointNum = <span class="number">0</span>; <span class="comment">// 联通的边数</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">        p = <span class="keyword">new</span> <span class="keyword">int</span>[N + <span class="number">1</span>];</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= N; i++) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            p[i] = i;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">        PriorityQueue&lt;Node&gt; heap = <span class="keyword">new</span> PriorityQueue&lt;Node&gt;((Node o1, Node o2) -&gt; (o1.val - o2.val));</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span>[] connection : connections) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            Node node = <span class="keyword">new</span> Node();</span></pre></td></tr><tr><td class="code"><pre><span class="line">            node.row = connection[<span class="number">0</span>];</span></pre></td></tr><tr><td class="code"><pre><span class="line">            node.col = connection[<span class="number">1</span>];</span></pre></td></tr><tr><td class="code"><pre><span class="line">            node.val = connection[<span class="number">2</span>];</span></pre></td></tr><tr><td class="code"><pre><span class="line">            heap.add(node);</span></pre></td></tr><tr><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">while</span> (!heap.isEmpty()) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            Node conn = heap.poll();</span></pre></td></tr><tr><td class="code"><pre><span class="line">            <span class="keyword">int</span> px = find(conn.row), py = find(conn.col);</span></pre></td></tr><tr><td class="code"><pre><span class="line">            <span class="keyword">if</span>(px != py) &#123; <span class="comment">//如果该边所在的两个节点不在同一个集合</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">                p[px] = py; <span class="comment">//合并集合</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">                ans += conn.val;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                pointNum++;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                <span class="comment">//对于无向图的话，至少需要n-1条边可以使得图是联通的；</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">                <span class="comment">//如果对于有向图的话，至少需要n条边才可以使得图是联通的</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">                <span class="keyword">if</span>(pointNum == N - <span class="number">1</span>)&#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                    <span class="keyword">return</span> ans;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="comment">/**</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="comment">     * 不断向上找，直到找到下标和元素相同的点。</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="comment">     */</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">find</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">while</span> (x != p[x]) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">            x = p[x];</span></pre></td></tr><tr><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">return</span> x;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">int</span>[][] connections = &#123;&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">5</span>&#125;, &#123;<span class="number">1</span>, <span class="number">3</span>, <span class="number">6</span>&#125;, &#123;<span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>&#125;&#125;;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        System.out.println(<span class="keyword">new</span> Solution().maximumMinimumPath(<span class="number">3</span>, connections));</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">        connections = <span class="keyword">new</span> <span class="keyword">int</span>[][]&#123;&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;, &#123;<span class="number">3</span>, <span class="number">4</span>, <span class="number">4</span>&#125;&#125;;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        System.out.println(<span class="keyword">new</span> Solution().maximumMinimumPath(<span class="number">4</span>, connections));</span></pre></td></tr><tr><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>数据结构与算法</category>
+      </categories>
+      <tags>
+        <tag>算法</tag>
+        <tag>并查集</tag>
       </tags>
   </entry>
 </search>
