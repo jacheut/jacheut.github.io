@@ -17,21 +17,22 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"jacheut.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="一、基础规范 表存储引擎必须使用InnoDB  表字符集默认使用utf8，必要时候使用utf8mb4  解读：（1）通用，无乱码风险，汉字3字节，英文1字节（2）utf8mb4是utf8的超集，有存储4字节例如表情符号时，使用它   禁止使用存储过程，视图，触发器，Event  解读：（1）对数据库性能影响较大，互联网业务，能让站点层和服务层干的事情，不要交到数据库层（2）调试，排错，迁移都比较困">
-<meta name="keywords" content="数据库,MySQL">
+  <meta name="keywords" content="MySQL">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MySQL规范">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;08&#x2F;MySQL%E8%A7%84%E8%8C%83&#x2F;index.html">
+<meta property="og:title" content="MySQL主从复制原理">
+<meta property="og:url" content="https:&#x2F;&#x2F;jacheut.github.io&#x2F;MySQL%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8E%9F%E7%90%86&#x2F;index.html">
 <meta property="og:site_name" content="jacheut&#39; blog">
-<meta property="og:description" content="一、基础规范 表存储引擎必须使用InnoDB  表字符集默认使用utf8，必要时候使用utf8mb4  解读：（1）通用，无乱码风险，汉字3字节，英文1字节（2）utf8mb4是utf8的超集，有存储4字节例如表情符号时，使用它   禁止使用存储过程，视图，触发器，Event  解读：（1）对数据库性能影响较大，互联网业务，能让站点层和服务层干的事情，不要交到数据库层（2）调试，排错，迁移都比较困">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-12-29T06:58:59.709Z">
+<meta property="og:image" content="https:&#x2F;&#x2F;user-gold-cdn.xitu.io&#x2F;2019&#x2F;4&#x2F;2&#x2F;169db46b2582abe2?imageView2&#x2F;0&#x2F;w&#x2F;1280&#x2F;h&#x2F;960&#x2F;format&#x2F;webp&#x2F;ignore-error&#x2F;1">
+<meta property="og:image" content="https:&#x2F;&#x2F;note.youdao.com&#x2F;yws&#x2F;public&#x2F;resource&#x2F;c9fd2f2bbbcdfdd5b8c1ba3a4f857cda&#x2F;xmlnote&#x2F;38525674C8A541A68A3A321D08531D57&#x2F;28242">
+<meta property="og:updated_time" content="2019-12-28T02:28:50.765Z">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;user-gold-cdn.xitu.io&#x2F;2019&#x2F;4&#x2F;2&#x2F;169db46b2582abe2?imageView2&#x2F;0&#x2F;w&#x2F;1280&#x2F;h&#x2F;960&#x2F;format&#x2F;webp&#x2F;ignore-error&#x2F;1">
 
-<link rel="canonical" href="http://yoursite.com/2019/12/08/MySQL%E8%A7%84%E8%8C%83/">
+<link rel="canonical" href="https://jacheut.github.io/MySQL%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8E%9F%E7%90%86/">
 
 
 <script id="page-configurations">
@@ -44,7 +45,7 @@
   };
 </script>
 
-  <title>MySQL规范 | jacheut' blog</title>
+  <title>MySQL主从复制原理 | jacheut' blog</title>
   
 
 
@@ -199,7 +200,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/08/MySQL%E8%A7%84%E8%8C%83/">
+    <link itemprop="mainEntityOfPage" href="https://jacheut.github.io/MySQL%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8E%9F%E7%90%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -212,7 +213,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          MySQL规范
+          MySQL主从复制原理
         </h1>
 
         <div class="post-meta">
@@ -222,14 +223,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2019-12-08 12:51:35" itemprop="dateCreated datePublished" datetime="2019-12-08T12:51:35+08:00">2019-12-08</time>
+              <time title="创建时间：2019-12-08 15:33:39" itemprop="dateCreated datePublished" datetime="2019-12-08T15:33:39+08:00">2019-12-08</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-12-29 14:58:59" itemprop="dateModified" datetime="2019-12-29T14:58:59+08:00">2019-12-29</time>
+                <time title="修改时间：2019-12-28 10:28:50" itemprop="dateModified" datetime="2019-12-28T10:28:50+08:00">2019-12-28</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -257,12 +258,27 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2019/12/08/MySQL%E8%A7%84%E8%8C%83/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2019/12/08/MySQL%E8%A7%84%E8%8C%83/" itemprop="commentCount"></span>
+    <a title="valine" href="/MySQL%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8E%9F%E7%90%86/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/MySQL%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8E%9F%E7%90%86/" itemprop="commentCount"></span>
     </a>
   </span>
   
-  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>722</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>1 分钟</span>
+            </span>
+            <div class="post-description">121</div>
 
         </div>
       </header>
@@ -273,142 +289,21 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="一、基础规范"><a href="#一、基础规范" class="headerlink" title="一、基础规范"></a>一、基础规范</h1><ul>
-<li><p>表存储引擎必须使用InnoDB</p>
-</li>
-<li><p>表字符集默认使用utf8，必要时候使用utf8mb4</p>
-<blockquote>
-<p>解读：<br>（1）通用，无乱码风险，汉字3字节，英文1字节<br>（2）utf8mb4是utf8的超集，有存储4字节例如表情符号时，使用它</p>
+        <p><strong>mysql主从复制需要三个线程，master（binlog dump thread）、slave（I/O thread 、SQL thread）。</strong></p>
+<h2 id="主从复制"><a href="#主从复制" class="headerlink" title="主从复制"></a>主从复制</h2><p><img src="https://user-gold-cdn.xitu.io/2019/4/2/169db46b2582abe2?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="alt"></p>
+<h3 id="master"><a href="#master" class="headerlink" title="master"></a>master</h3><blockquote>
+<p>（1）<strong>binlog dump线程</strong>：当主库中有数据更新时，那么主库就会根据按照设置的binlog格式，将此次更新的事件类型写入到主库的binlog文件中，此时主库会创建log dump线程通知slave有数据更新。</p>
 </blockquote>
-</li>
-<li><p>禁止使用存储过程，视图，触发器，Event</p>
-<blockquote>
-<p>解读：<br>（1）对数据库性能影响较大，互联网业务，能让站点层和服务层干的事情，不要交到数据库层<br>（2）调试，排错，迁移都比较困难，扩展性较差</p>
+<h3 id="slave"><a href="#slave" class="headerlink" title="slave"></a>slave</h3><blockquote>
+<p>（2）<strong>I/O线程</strong>：该线程会连接到master，向log dump线程请求一份指定binlog文件位置的副本，并将请求回来的binlog存到本地的relay log中，relay log和binlog日志一样也是记录了数据更新的事件，它也是按照递增后缀名的方式，产生多个relay log（ host_name-relay-bin.000001）文件，slave会使用一个index文件（ host_name-relay-bin.index）来追踪当前正在使用的relay log文件。</p>
 </blockquote>
-</li>
-<li><p>禁止在数据库中存储大文件，例如照片，可以将大文件存储在对象存储系统，数据库中存储路径</p>
-</li>
-<li><p>禁止在线上环境做数据库压力测试</p>
-</li>
-<li><p>测试，开发，线上数据库环境必须隔离</p>
-</li>
-</ul>
-<h1 id="二、命名规范"><a href="#二、命名规范" class="headerlink" title="二、命名规范"></a>二、命名规范</h1><ul>
-<li><p>库名，表名，列名必须用小写，采用下划线分隔</p>
-</li>
-<li><p>库名，表名，列名必须见名知义，长度不要超过32字符</p>
-</li>
-<li><p>库备份必须以bak为前缀，以日期为后缀</p>
-</li>
-<li><p>从库必须以-s为后缀</p>
-</li>
-<li><p>备库必须以-ss为后缀</p>
-</li>
-</ul>
-<h1 id="三、表设计规范"><a href="#三、表设计规范" class="headerlink" title="三、表设计规范"></a>三、表设计规范</h1><ul>
-<li><p>单实例表个数必须控制在2000个以内</p>
-</li>
-<li><p>单表分表个数必须控制在1024个以内</p>
-</li>
-<li><p>表必须有主键，推荐使用UNSIGNED整数为主键</p>
 <blockquote>
-<p>潜在坑：删除无主键的表，如果是row模式的主从架构，从库会挂住</p>
+<p>（3）<strong>SQL线程</strong>：该线程检测到relay log有更新后，会读取并在本地做redo操作，将发生在主库的事件在本地重新执行一遍，来保证主从数据同步。此外，如果一个relay log文件中的全部事件都执行完毕，那么SQL线程会自动将该relay log 文件删除掉。</p>
 </blockquote>
-</li>
-<li><p>禁止使用外键，如果要保证完整性，应由应用程式实现</p>
-<blockquote>
-<p>解读：外键使得表之间相互耦合，影响update/delete等SQL性能，有可能造成死锁，高并发情况下容易成为数据库瓶颈</p>
-</blockquote>
-</li>
-<li><p>建议将大字段，访问频度低的字段拆分到单独的表中存储，分离冷热数据</p>
-</li>
-</ul>
-<h1 id="四、列设计规范"><a href="#四、列设计规范" class="headerlink" title="四、列设计规范"></a>四、列设计规范</h1><ul>
-<li><p>根据业务区分使用tinyint/int/bigint，分别会占用1/4/8字节</p>
-</li>
-<li><p>根据业务区分使用char/varchar</p>
-<blockquote>
-<p>解读：<br>（1）字段长度固定，或者长度近似的业务场景，适合使用char，能够减少碎片，查询性能高<br>（2）字段长度相差较大，或者更新较少的业务场景，适合使用varchar，能够减少空间</p>
-</blockquote>
-</li>
-<li><p>根据业务区分使用datetime/timestamp</p>
-<blockquote>
-<p>解读：前者占用5个字节，后者占用4个字节，存储年使用YEAR，存储日期使用DATE，存储时间使用datetime</p>
-</blockquote>
-</li>
-<li><p>必须把字段定义为NOT NULL并设默认值</p>
-<blockquote>
-<p>解读：<br>（1）NULL的列使用索引，索引统计，值都更加复杂，MySQL更难优化<br>（2）NULL需要更多的存储空间<br>（3）NULL只能采用IS NULL或者IS NOT NULL，而在=/!=/in/not in时有大坑</p>
-</blockquote>
-</li>
-<li><p>使用INT UNSIGNED存储IPv4，不要用char(15)</p>
-</li>
-<li><p>使用varchar(20)存储手机号，不要使用整数</p>
-<blockquote>
-<p>解读：<br>（1）牵扯到国家代号，可能出现+/-/()等字符，例如+86<br>（2）手机号不会用来做数学运算<br>（3）varchar可以模糊查询，例如like ‘138%’</p>
-</blockquote>
-</li>
-<li><p>使用TINYINT来代替ENUM</p>
-<blockquote>
-<p>解读：ENUM增加新值要进行DDL操作</p>
-</blockquote>
-</li>
-</ul>
-<h1 id="五、索引规范"><a href="#五、索引规范" class="headerlink" title="五、索引规范"></a>五、索引规范</h1><ul>
-<li><p>唯一索引使用uniq_[字段名]来命名</p>
-</li>
-<li><p>非唯一索引使用idx_[字段名]来命名</p>
-</li>
-<li><p>单张表索引数量建议控制在5个以内</p>
-<blockquote>
-<p>解读：<br>（1）互联网高并发业务，太多索引会影响写性能<br>（2）生成执行计划时，如果索引太多，会降低性能，并可能导致MySQL选择不到最优索引<br>（3）异常复杂的查询需求，可以选择ES等更为适合的方式存储</p>
-</blockquote>
-</li>
-<li><p>组合索引字段数不建议超过5个</p>
-<blockquote>
-<p>解读：如果5个字段还不能极大缩小row范围，八成是设计有问题</p>
-</blockquote>
-</li>
-<li><p>不建议在频繁更新的字段上建立索引</p>
-</li>
-<li><p>非必要不要进行JOIN查询，如果要进行JOIN查询，被JOIN的字段必须类型相同，并建立索引</p>
-<blockquote>
-<p>解读：踩过因为JOIN字段类型不一致，而导致全表扫描的坑么？</p>
-</blockquote>
-</li>
-<li><p>理解组合索引最左前缀原则，避免重复建设索引，如果建立了(a,b,c)，相当于建立了(a), (a,b), (a,b,c)</p>
-</li>
-</ul>
-<h1 id="六、SQL规范"><a href="#六、SQL规范" class="headerlink" title="六、SQL规范"></a>六、SQL规范</h1><ul>
-<li><p>禁止使用select *，只获取必要字段</p>
-<blockquote>
-<p>解读：<br>（1）select *会增加cpu/io/内存/带宽的消耗<br>（2）指定字段能有效利用索引覆盖<br>（3）指定字段查询，在表结构变更时，能保证对应用程序无影响</p>
-</blockquote>
-</li>
-<li><p>insert必须指定字段，禁止使用insert into T values()</p>
-<blockquote>
-<p>解读：指定字段插入，在表结构变更时，能保证对应用程序无影响</p>
-</blockquote>
-</li>
-<li><p>隐式类型转换会使索引失效，导致全表扫描</p>
-</li>
-<li><p>禁止在where条件列使用函数或者表达式</p>
-<blockquote>
-<p>解读：导致不能命中索引，全表扫描</p>
-</blockquote>
-</li>
-<li><p>禁止负向查询以及%开头的模糊查询</p>
-<blockquote>
-<p>解读：导致不能命中索引，全表扫描</p>
-</blockquote>
-</li>
-<li><p>禁止大表JOIN和子查询</p>
-</li>
-<li><p>同一个字段上的OR必须改写问IN，IN的值必须少于50个</p>
-</li>
-<li><p>应用程序必须捕获SQL异常，方便定位线上问题</p>
-</li>
-</ul>
+<h2 id="半同步复制"><a href="#半同步复制" class="headerlink" title="半同步复制"></a>半同步复制</h2><p><code>如何解决MySQL主库宕机导致的数据丢失情况？</code></p>
+<p>使用半同步复制。在主库commit之前，需要先将binlog同步到从库，主库可以设置同步binlog的过期时间，在binlog复制到从库之后，从库后续会自行重放中继日志。不过这样也增加了客户端的延迟。另外这个需要安装下MySQL的插件。</p>
+<p><img src="https://note.youdao.com/yws/public/resource/c9fd2f2bbbcdfdd5b8c1ba3a4f857cda/xmlnote/38525674C8A541A68A3A321D08531D57/28242" alt="alt"></p>
+<p>MySQL的半同步插件为：semisync_xx.so</p>
 
     </div>
 
@@ -444,7 +339,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="/http:/yoursite.com/2019/12/08/MySQL%E8%A7%84%E8%8C%83/" title="MySQL规范">http://yoursite.com/2019/12/08/MySQL规范/</a>
+    <a href="/https:/jacheut.github.io/MySQL%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8E%9F%E7%90%86/" title="MySQL主从复制原理">https://jacheut.github.io/MySQL主从复制原理/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -455,7 +350,6 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag"># 数据库</a>
               <a href="/tags/MySQL/" rel="tag"># MySQL</a>
           </div>
 
@@ -464,10 +358,13 @@
 
         
     <div class="post-nav">
-      <div class="post-nav-item"></div>
       <div class="post-nav-item">
-    <a href="/2019/12/08/MySQL%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8E%9F%E7%90%86/" rel="next" title="MySQL主从复制原理">
-      MySQL主从复制原理 <i class="fa fa-chevron-right"></i>
+    <a href="/MySQL%E8%A7%84%E8%8C%83/" rel="prev" title="MySQL规范">
+      <i class="fa fa-chevron-left"></i> MySQL规范
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/JVM%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/" rel="next" title="JVM内存结构">
+      JVM内存结构 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -528,7 +425,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一、基础规范"><span class="nav-number">1.</span> <span class="nav-text">一、基础规范</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二、命名规范"><span class="nav-number">2.</span> <span class="nav-text">二、命名规范</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#三、表设计规范"><span class="nav-number">3.</span> <span class="nav-text">三、表设计规范</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#四、列设计规范"><span class="nav-number">4.</span> <span class="nav-text">四、列设计规范</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#五、索引规范"><span class="nav-number">5.</span> <span class="nav-text">五、索引规范</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#六、SQL规范"><span class="nav-number">6.</span> <span class="nav-text">六、SQL规范</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#主从复制"><span class="nav-number">1.</span> <span class="nav-text">主从复制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#master"><span class="nav-number">1.1.</span> <span class="nav-text">master</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#slave"><span class="nav-number">1.2.</span> <span class="nav-text">slave</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#半同步复制"><span class="nav-number">2.</span> <span class="nav-text">半同步复制</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -586,12 +483,24 @@
   
   &copy; 
   <span itemprop="copyrightYear">2020</span>
-  <span class="with-love">
+  <span class="with-love" id="heart">
     <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">jacheut</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">18k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">16 分钟</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>
 
         

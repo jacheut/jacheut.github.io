@@ -17,21 +17,21 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"jacheut.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="题目描述想象一下你是个城市基建规划者，地图上有 N 座城市，它们按以 1 到 N 的次序编号。 给你一些可连接的选项 conections，其中每个选项 conections[i] &#x3D; [city1, city2, cost] 表示将城市 city1 和城市 city2 连接所要的成本。（连接是双向的，也就是说城市 city1 和城市 city2 相连也同样意味着城市 city2 和城市 city">
 <meta name="keywords" content="算法,并查集">
 <meta property="og:type" content="article">
 <meta property="og:title" content="1135. 最低成本联通所有城市">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;07&#x2F;08&#x2F;%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95&#x2F;leetcode&#x2F;%E5%B9%B6%E6%9F%A5%E9%9B%86&#x2F;%E6%9C%80%E4%BD%8E%E6%88%90%E6%9C%AC%E8%81%94%E9%80%9A%E6%89%80%E6%9C%89%E5%9F%8E%E5%B8%82&#x2F;index.html">
+<meta property="og:url" content="https:&#x2F;&#x2F;jacheut.github.io&#x2F;%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95&#x2F;leetcode&#x2F;%E5%B9%B6%E6%9F%A5%E9%9B%86&#x2F;%E6%9C%80%E4%BD%8E%E6%88%90%E6%9C%AC%E8%81%94%E9%80%9A%E6%89%80%E6%9C%89%E5%9F%8E%E5%B8%82&#x2F;index.html">
 <meta property="og:site_name" content="jacheut&#39; blog">
 <meta property="og:description" content="题目描述想象一下你是个城市基建规划者，地图上有 N 座城市，它们按以 1 到 N 的次序编号。 给你一些可连接的选项 conections，其中每个选项 conections[i] &#x3D; [city1, city2, cost] 表示将城市 city1 和城市 city2 连接所要的成本。（连接是双向的，也就是说城市 city1 和城市 city2 相连也同样意味着城市 city2 和城市 city">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2020-07-08T14:14:28.830Z">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yoursite.com/2020/07/08/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/leetcode/%E5%B9%B6%E6%9F%A5%E9%9B%86/%E6%9C%80%E4%BD%8E%E6%88%90%E6%9C%AC%E8%81%94%E9%80%9A%E6%89%80%E6%9C%89%E5%9F%8E%E5%B8%82/">
+<link rel="canonical" href="https://jacheut.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/leetcode/%E5%B9%B6%E6%9F%A5%E9%9B%86/%E6%9C%80%E4%BD%8E%E6%88%90%E6%9C%AC%E8%81%94%E9%80%9A%E6%89%80%E6%9C%89%E5%9F%8E%E5%B8%82/">
 
 
 <script id="page-configurations">
@@ -199,7 +199,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/08/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/leetcode/%E5%B9%B6%E6%9F%A5%E9%9B%86/%E6%9C%80%E4%BD%8E%E6%88%90%E6%9C%AC%E8%81%94%E9%80%9A%E6%89%80%E6%9C%89%E5%9F%8E%E5%B8%82/">
+    <link itemprop="mainEntityOfPage" href="https://jacheut.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/leetcode/%E5%B9%B6%E6%9F%A5%E9%9B%86/%E6%9C%80%E4%BD%8E%E6%88%90%E6%9C%AC%E8%81%94%E9%80%9A%E6%89%80%E6%9C%89%E5%9F%8E%E5%B8%82/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -251,12 +251,26 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2020/07/08/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/leetcode/%E5%B9%B6%E6%9F%A5%E9%9B%86/%E6%9C%80%E4%BD%8E%E6%88%90%E6%9C%AC%E8%81%94%E9%80%9A%E6%89%80%E6%9C%89%E5%9F%8E%E5%B8%82/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/07/08/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/leetcode/%E5%B9%B6%E6%9F%A5%E9%9B%86/%E6%9C%80%E4%BD%8E%E6%88%90%E6%9C%AC%E8%81%94%E9%80%9A%E6%89%80%E6%9C%89%E5%9F%8E%E5%B8%82/" itemprop="commentCount"></span>
+    <a title="valine" href="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/leetcode/%E5%B9%B6%E6%9F%A5%E9%9B%86/%E6%9C%80%E4%BD%8E%E6%88%90%E6%9C%AC%E8%81%94%E9%80%9A%E6%89%80%E6%9C%89%E5%9F%8E%E5%B8%82/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/leetcode/%E5%B9%B6%E6%9F%A5%E9%9B%86/%E6%9C%80%E4%BD%8E%E6%88%90%E6%9C%AC%E8%81%94%E9%80%9A%E6%89%80%E6%9C%89%E5%9F%8E%E5%B8%82/" itemprop="commentCount"></span>
     </a>
   </span>
   
-  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
 
         </div>
       </header>
@@ -320,7 +334,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="/http:/yoursite.com/2020/07/08/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/leetcode/%E5%B9%B6%E6%9F%A5%E9%9B%86/%E6%9C%80%E4%BD%8E%E6%88%90%E6%9C%AC%E8%81%94%E9%80%9A%E6%89%80%E6%9C%89%E5%9F%8E%E5%B8%82/" title="1135. 最低成本联通所有城市">http://yoursite.com/2020/07/08/数据结构与算法/leetcode/并查集/最低成本联通所有城市/</a>
+    <a href="/https:/jacheut.github.io/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/leetcode/%E5%B9%B6%E6%9F%A5%E9%9B%86/%E6%9C%80%E4%BD%8E%E6%88%90%E6%9C%AC%E8%81%94%E9%80%9A%E6%89%80%E6%9C%89%E5%9F%8E%E5%B8%82/" title="1135. 最低成本联通所有城市">https://jacheut.github.io/数据结构与算法/leetcode/并查集/最低成本联通所有城市/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -341,7 +355,7 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/07/07/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/leetcode/%E6%9C%80%E5%A4%A7%E9%A2%91%E7%8E%87%E6%A0%88/" rel="prev" title="895.最大频率栈">
+    <a href="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/leetcode/%E6%9C%80%E5%A4%A7%E9%A2%91%E7%8E%87%E6%A0%88/" rel="prev" title="895.最大频率栈">
       <i class="fa fa-chevron-left"></i> 895.最大频率栈
     </a></div>
       <div class="post-nav-item"></div>
@@ -462,12 +476,24 @@
   
   &copy; 
   <span itemprop="copyrightYear">2020</span>
-  <span class="with-love">
+  <span class="with-love" id="heart">
     <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">jacheut</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">18k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">16 分钟</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>
 
         
