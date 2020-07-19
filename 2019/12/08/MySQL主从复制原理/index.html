@@ -276,7 +276,7 @@
 
       
         <p><strong>mysql主从复制需要三个线程，master（binlog dump thread）、slave（I/O thread 、SQL thread）。</strong></p>
-<h2 id="主从复制"><a href="#主从复制" class="headerlink" title="主从复制"></a>主从复制</h2><p><a href="https://user-gold-cdn.xitu.io/2019/4/2/169db46b2582abe2?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" target="_blank" rel="noopener" data-fancybox="group" data-caption="alt" class="fancybox"><img alt="alt" data-src="https://user-gold-cdn.xitu.io/2019/4/2/169db46b2582abe2?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" class="lazyload" title="alt"></a></p>
+<h2 id="主从复制"><a href="#主从复制" class="headerlink" title="主从复制"></a>主从复制</h2><p><img src="https://user-gold-cdn.xitu.io/2019/4/2/169db46b2582abe2?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="alt"></p>
 <h3 id="master"><a href="#master" class="headerlink" title="master"></a>master</h3><blockquote>
 <p>（1）<strong>binlog dump线程</strong>：当主库中有数据更新时，那么主库就会根据按照设置的binlog格式，将此次更新的事件类型写入到主库的binlog文件中，此时主库会创建log dump线程通知slave有数据更新。</p>
 </blockquote>
@@ -288,7 +288,7 @@
 </blockquote>
 <h2 id="半同步复制"><a href="#半同步复制" class="headerlink" title="半同步复制"></a>半同步复制</h2><p><code>如何解决MySQL主库宕机导致的数据丢失情况？</code></p>
 <p>使用半同步复制。在主库commit之前，需要先将binlog同步到从库，主库可以设置同步binlog的过期时间，在binlog复制到从库之后，从库后续会自行重放中继日志。不过这样也增加了客户端的延迟。另外这个需要安装下MySQL的插件。</p>
-<p><a href="https://note.youdao.com/yws/public/resource/c9fd2f2bbbcdfdd5b8c1ba3a4f857cda/xmlnote/38525674C8A541A68A3A321D08531D57/28242" target="_blank" rel="noopener" data-fancybox="group" data-caption="alt" class="fancybox"><img alt="alt" data-src="https://note.youdao.com/yws/public/resource/c9fd2f2bbbcdfdd5b8c1ba3a4f857cda/xmlnote/38525674C8A541A68A3A321D08531D57/28242" class="lazyload" title="alt"></a></p>
+<p><img src="https://note.youdao.com/yws/public/resource/c9fd2f2bbbcdfdd5b8c1ba3a4f857cda/xmlnote/38525674C8A541A68A3A321D08531D57/28242" alt="alt"></p>
 <p>MySQL的半同步插件为：semisync_xx.so</p>
 
     </div>
