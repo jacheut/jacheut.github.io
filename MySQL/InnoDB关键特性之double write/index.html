@@ -21,13 +21,14 @@
   </script>
 
   <meta name="description" content="一、脏页刷盘风险关于IO的最小单位： 　　1. 数据库IO的最小单位是16K（MySQL默认，oracle是8K） 　　2. 文件系统IO的最小单位是4K（也有1K的） 　　3. 磁盘IO的最小单位是512字节 因此，存在IO写入导致page损坏的风险： ![image](InnoDB关键特性之double write&#x2F;1.png) 二、doublewrite：两次写提高innodb的可靠性，用来">
+<meta name="keywords" content="MySQL">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MySQL&#x2F;InnoDB关键特性之double write">
+<meta property="og:title" content="MySQL的刷盘机制？">
 <meta property="og:url" content="https:&#x2F;&#x2F;jacheut.github.io&#x2F;MySQL&#x2F;InnoDB%E5%85%B3%E9%94%AE%E7%89%B9%E6%80%A7%E4%B9%8Bdouble%20write&#x2F;index.html">
 <meta property="og:site_name" content="jacheut&#39; blog">
 <meta property="og:description" content="一、脏页刷盘风险关于IO的最小单位： 　　1. 数据库IO的最小单位是16K（MySQL默认，oracle是8K） 　　2. 文件系统IO的最小单位是4K（也有1K的） 　　3. 磁盘IO的最小单位是512字节 因此，存在IO写入导致page损坏的风险： ![image](InnoDB关键特性之double write&#x2F;1.png) 二、doublewrite：两次写提高innodb的可靠性，用来">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-09-20T10:14:51.320Z">
+<meta property="og:updated_time" content="2020-09-20T10:18:49.383Z">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="https://jacheut.github.io/MySQL/InnoDB%E5%85%B3%E9%94%AE%E7%89%B9%E6%80%A7%E4%B9%8Bdouble%20write/">
@@ -43,7 +44,7 @@
   };
 </script>
 
-  <title>MySQL/InnoDB关键特性之double write | jacheut' blog</title>
+  <title>MySQL的刷盘机制？ | jacheut' blog</title>
   
 
 
@@ -211,7 +212,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          MySQL/InnoDB关键特性之double write
+          MySQL的刷盘机制？
         </h1>
 
         <div class="post-meta">
@@ -220,8 +221,18 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2020-09-20 18:14:51" itemprop="dateCreated datePublished" datetime="2020-09-20T18:14:51+08:00">2020-09-20</time>
+              <time title="创建时间：2020-09-20 00:00:00 / 修改时间：18:18:49" itemprop="dateCreated datePublished" datetime="2020-09-20T00:00:00+08:00">2020-09-20</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a>
+                </span>
             </span>
 
           
@@ -341,7 +352,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="/https:/jacheut.github.io/MySQL/InnoDB%E5%85%B3%E9%94%AE%E7%89%B9%E6%80%A7%E4%B9%8Bdouble%20write/" title="MySQL&#x2F;InnoDB关键特性之double write">https://jacheut.github.io/MySQL/InnoDB关键特性之double write/</a>
+    <a href="/https:/jacheut.github.io/MySQL/InnoDB%E5%85%B3%E9%94%AE%E7%89%B9%E6%80%A7%E4%B9%8Bdouble%20write/" title="MySQL的刷盘机制？">https://jacheut.github.io/MySQL/InnoDB关键特性之double write/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -351,6 +362,9 @@
 
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/MySQL/" rel="tag"># MySQL</a>
+          </div>
 
         
 
