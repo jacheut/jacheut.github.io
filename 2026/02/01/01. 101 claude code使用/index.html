@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 8.1.1">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"jacheut.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"always","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":null,"show_result":true},"fold":{"enable":false,"height":500},"language":false,"highlight_theme":"default"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="Claude Code 完全入门指南Claude Code 是 Anthropic 官方的 AI 编程助手，它直接运行在你的终端中，能够理解你的代码库，通过自然语言命令帮助你更快地编码。 目录 安装与配置 快速开始 核心功能 最佳实践 高级功能 常用命令 故障排除   安装与配置系统要求 Node.js 18 或更高版本 Windows &#x2F; macOS &#x2F; Linux Git（">
+<meta property="og:type" content="article">
+<meta property="og:title" content="25. 101 claude code使用">
+<meta property="og:url" content="https://jacheut.github.io/2026/02/01/01.%20101%20claude%20code%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="Jacheut&#39;s Blog">
+<meta property="og:description" content="Claude Code 完全入门指南Claude Code 是 Anthropic 官方的 AI 编程助手，它直接运行在你的终端中，能够理解你的代码库，通过自然语言命令帮助你更快地编码。 目录 安装与配置 快速开始 核心功能 最佳实践 高级功能 常用命令 故障排除   安装与配置系统要求 Node.js 18 或更高版本 Windows &#x2F; macOS &#x2F; Linux Git（">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-01-31T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-02-19T02:42:21.863Z">
+<meta property="article:author" content="Jacheut">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="Beginner">
+<meta property="article:tag" content="Claude">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://jacheut.github.io/2026/02/01/01.%20101%20claude%20code%E4%BD%BF%E7%94%A8/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://jacheut.github.io/2026/02/01/01.%20101%20claude%20code%E4%BD%BF%E7%94%A8/","path":"2026/02/01/01. 101 claude code使用/","title":"25. 101 claude code使用"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>25. 101 claude code使用 | Jacheut's Blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Jacheut's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">技术博客 | Java | AI | 开发</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Claude-Code-%E5%AE%8C%E5%85%A8%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97"><span class="nav-number">1.</span> <span class="nav-text">Claude Code 完全入门指南</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%AE%E5%BD%95"><span class="nav-number">1.1.</span> <span class="nav-text">目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE"><span class="nav-number">1.2.</span> <span class="nav-text">安装与配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E8%A6%81%E6%B1%82"><span class="nav-number">1.2.1.</span> <span class="nav-text">系统要求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E6%AD%A5%E9%AA%A4"><span class="nav-number">1.2.2.</span> <span class="nav-text">安装步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%85%A8%E5%B1%80%E5%AE%89%E8%A3%85-Claude-Code"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">1. 全局安装 Claude Code</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E9%AA%8C%E8%AF%81%E5%AE%89%E8%A3%85"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">2. 验证安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E9%85%8D%E7%BD%AE-API%EF%BC%88%E4%BD%BF%E7%94%A8%E7%AC%AC%E4%B8%89%E6%96%B9%E4%B8%AD%E8%BD%AC%EF%BC%89"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">3. 配置 API（使用第三方中转）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E9%A6%96%E6%AC%A1%E5%90%AF%E5%8A%A8"><span class="nav-number">1.2.2.4.</span> <span class="nav-text">4. 首次启动</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E5%BC%80%E5%A7%8B"><span class="nav-number">1.3.</span> <span class="nav-text">快速开始</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%B7%A5%E4%BD%9C%E6%B5%81"><span class="nav-number">1.3.1.</span> <span class="nav-text">基本工作流</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E8%AF%9D%E7%A4%BA%E4%BE%8B"><span class="nav-number">1.3.2.</span> <span class="nav-text">对话示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD"><span class="nav-number">1.4.</span> <span class="nav-text">核心功能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E4%BB%A3%E7%A0%81%E7%90%86%E8%A7%A3%E4%B8%8E%E5%88%86%E6%9E%90"><span class="nav-number">1.4.1.</span> <span class="nav-text">1. 代码理解与分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90%E4%B8%8E%E7%BC%96%E8%BE%91"><span class="nav-number">1.4.2.</span> <span class="nav-text">2. 代码生成与编辑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Git-%E5%B7%A5%E4%BD%9C%E6%B5%81%E9%9B%86%E6%88%90"><span class="nav-number">1.4.3.</span> <span class="nav-text">3. Git 工作流集成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E6%B5%8B%E8%AF%95%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91"><span class="nav-number">1.4.4.</span> <span class="nav-text">4. 测试驱动开发</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E7%BB%88%E7%AB%AF%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C"><span class="nav-number">1.4.5.</span> <span class="nav-text">5. 终端命令执行</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="nav-number">1.5.</span> <span class="nav-text">最佳实践</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%8D%E6%9D%82%E4%BB%BB%E5%8A%A1%E4%BD%BF%E7%94%A8-Plan-Mode"><span class="nav-number">1.5.1.</span> <span class="nav-text">复杂任务使用 Plan Mode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%8A%E6%97%A9%E7%BA%A0%E9%94%99"><span class="nav-number">1.5.2.</span> <span class="nav-text">及早纠错</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%90%E4%BE%9B%E9%AA%8C%E8%AF%81%E7%9B%AE%E6%A0%87"><span class="nav-number">1.5.3.</span> <span class="nav-text">提供验证目标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A2%9E%E9%87%8F%E6%B5%8B%E8%AF%95"><span class="nav-number">1.5.4.</span> <span class="nav-text">增量测试</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%AB%98%E7%BA%A7%E5%8A%9F%E8%83%BD"><span class="nav-number">1.6.</span> <span class="nav-text">高级功能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CLAUDE-md-%E9%A1%B9%E7%9B%AE%E9%85%8D%E7%BD%AE"><span class="nav-number">1.6.1.</span> <span class="nav-text">CLAUDE.md 项目配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hooks%EF%BC%88%E9%92%A9%E5%AD%90%EF%BC%89"><span class="nav-number">1.6.2.</span> <span class="nav-text">Hooks（钩子）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Skills%EF%BC%88%E6%8A%80%E8%83%BD%EF%BC%89"><span class="nav-number">1.6.3.</span> <span class="nav-text">Skills（技能）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5-1"><span class="nav-number">1.7.</span> <span class="nav-text">最佳实践</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">1.8.</span> <span class="nav-text">常用命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E7%BD%AE-Slash-Commands"><span class="nav-number">1.8.1.</span> <span class="nav-text">内置 Slash Commands</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BF%AB%E6%8D%B7%E9%94%AE"><span class="nav-number">1.8.2.</span> <span class="nav-text">快捷键</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%85%E9%9A%9C%E6%8E%92%E9%99%A4"><span class="nav-number">1.9.</span> <span class="nav-text">故障排除</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="nav-number">1.9.1.</span> <span class="nav-text">常见问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E9%98%B6%E6%8A%80%E5%B7%A7"><span class="nav-number">1.10.</span> <span class="nav-text">进阶技巧</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E4%BD%BF%E7%94%A8-MCP-%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">1.10.1.</span> <span class="nav-text">1. 使用 MCP 服务器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E4%B8%8A%E4%B8%8B%E6%96%87%E7%AE%A1%E7%90%86"><span class="nav-number">1.10.2.</span> <span class="nav-text">2. 上下文管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%A4%9A%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C"><span class="nav-number">1.10.3.</span> <span class="nav-text">3. 多文件操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%AD%90%E4%BB%BB%E5%8A%A1%E4%BB%A3%E7%90%86"><span class="nav-number">1.10.4.</span> <span class="nav-text">4. 子任务代理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%BA%90"><span class="nav-number">1.11.</span> <span class="nav-text">参考资源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%B4%E6%96%B0%E6%97%A5%E5%BF%97"><span class="nav-number">1.12.</span> <span class="nav-text">更新日志</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Jacheut"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Jacheut</p>
+  <div class="site-description" itemprop="description">分享技术知识和开发经验</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/jacheut" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;jacheut" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://jacheut.github.io/2026/02/01/01.%20101%20claude%20code%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jacheut">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jacheut's Blog">
+      <meta itemprop="description" content="分享技术知识和开发经验">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="25. 101 claude code使用 | Jacheut's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          25. 101 claude code使用
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-02-01 00:00:00" itemprop="dateCreated datePublished" datetime="2026-02-01T00:00:00+08:00">2026-02-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-02-19 10:42:21" itemprop="dateModified" datetime="2026-02-19T10:42:21+08:00">2026-02-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/AI-Agent/" itemprop="url" rel="index"><span itemprop="name">AI-Agent</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="Claude-Code-完全入门指南"><a href="#Claude-Code-完全入门指南" class="headerlink" title="Claude Code 完全入门指南"></a>Claude Code 完全入门指南</h1><p>Claude Code 是 Anthropic 官方的 AI 编程助手，它直接运行在你的终端中，能够理解你的代码库，通过自然语言命令帮助你更快地编码。</p>
+<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
+<li><a href="#%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE">安装与配置</a></li>
+<li><a href="#%E5%BF%AB%E9%80%9F%E5%BC%80%E5%A7%8B">快速开始</a></li>
+<li><a href="#%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD">核心功能</a></li>
+<li><a href="#%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5">最佳实践</a></li>
+<li><a href="#%E9%AB%98%E7%BA%A7%E5%8A%9F%E8%83%BD">高级功能</a></li>
+<li><a href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4">常用命令</a></li>
+<li><a href="#%E6%95%85%E9%9A%9C%E6%8E%92%E9%99%A4">故障排除</a></li>
+</ul>
+<hr>
+<h2 id="安装与配置"><a href="#安装与配置" class="headerlink" title="安装与配置"></a>安装与配置</h2><h3 id="系统要求"><a href="#系统要求" class="headerlink" title="系统要求"></a>系统要求</h3><ul>
+<li>Node.js 18 或更高版本</li>
+<li>Windows &#x2F; macOS &#x2F; Linux</li>
+<li>Git（可选，用于代码管理功能）</li>
+</ul>
+<h3 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h3><h4 id="1-全局安装-Claude-Code"><a href="#1-全局安装-Claude-Code" class="headerlink" title="1. 全局安装 Claude Code"></a>1. 全局安装 Claude Code</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g @anthropic-ai/claude-code</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-验证安装"><a href="#2-验证安装" class="headerlink" title="2. 验证安装"></a>2. 验证安装</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">claude --version</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-配置-API（使用第三方中转）"><a href="#3-配置-API（使用第三方中转）" class="headerlink" title="3. 配置 API（使用第三方中转）"></a>3. 配置 API（使用第三方中转）</h4><p>如果使用 DeepRouter 等第三方中转服务，设置环境变量：</p>
+<p><strong>Windows (CMD):</strong></p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">setx ANTHROPIC_AUTH_TOKEN &quot;sk-请替换为你的API密钥&quot;</span><br><span class="line">setx ANTHROPIC_BASE_URL &quot;https://deeprouter.top&quot;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Windows (PowerShell):</strong></p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[<span class="type">System.Environment</span>]::SetEnvironmentVariable(<span class="string">&#x27;ANTHROPIC_AUTH_TOKEN&#x27;</span>, <span class="string">&#x27;sk-请替换为你的API密钥&#x27;</span>, <span class="string">&#x27;User&#x27;</span>)</span><br><span class="line">[<span class="type">System.Environment</span>]::SetEnvironmentVariable(<span class="string">&#x27;ANTHROPIC_BASE_URL&#x27;</span>, <span class="string">&#x27;https://deeprouter.top&#x27;</span>, <span class="string">&#x27;User&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>Linux&#x2F;macOS:</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;export ANTHROPIC_AUTH_TOKEN=&quot;sk-请替换为你的API密钥&quot;&#x27;</span> &gt;&gt; ~/.bashrc</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;export ANTHROPIC_BASE_URL=&quot;https://deeprouter.top&quot;&#x27;</span> &gt;&gt; ~/.bashrc</span><br><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-首次启动"><a href="#4-首次启动" class="headerlink" title="4. 首次启动"></a>4. 首次启动</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /path/to/your/project</span><br><span class="line">claude</span><br></pre></td></tr></table></figure>
+
+<p>首次运行时，Claude Code 会引导你完成登录和初始化设置。</p>
+<hr>
+<h2 id="快速开始"><a href="#快速开始" class="headerlink" title="快速开始"></a>快速开始</h2><h3 id="基本工作流"><a href="#基本工作流" class="headerlink" title="基本工作流"></a>基本工作流</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 进入项目目录</span></span><br><span class="line"><span class="built_in">cd</span> your-project</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 启动 Claude Code</span></span><br><span class="line">claude</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 开始对话</span></span><br><span class="line"><span class="comment"># &gt; 帮我理解这个项目的结构</span></span><br><span class="line"><span class="comment"># &gt; 重构 User 组件</span></span><br><span class="line"><span class="comment"># &gt; 写一个单元测试验证登录功能</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="对话示例"><a href="#对话示例" class="headerlink" title="对话示例"></a>对话示例</h3><p><strong>代码解释:</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; 解释 src/utils/api.js 的工作原理</span><br></pre></td></tr></table></figure>
+
+<p><strong>功能开发:</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; 添加用户头像上传功能，使用 AWS S3</span><br></pre></td></tr></table></figure>
+
+<p><strong>Bug 修复:</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; 帮我排查登录按钮点击没反应的问题</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="核心功能"><a href="#核心功能" class="headerlink" title="核心功能"></a>核心功能</h2><h3 id="1-代码理解与分析"><a href="#1-代码理解与分析" class="headerlink" title="1. 代码理解与分析"></a>1. 代码理解与分析</h3><p>Claude Code 可以读取和分析你的整个代码库：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; 这个项目使用什么技术栈？</span><br><span class="line">&gt; 找出所有使用 useState 的组件</span><br><span class="line">&gt; 分析 auth.js 中的安全漏洞</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-代码生成与编辑"><a href="#2-代码生成与编辑" class="headerlink" title="2. 代码生成与编辑"></a>2. 代码生成与编辑</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; 根据 API 文档生成 TypeScript 类型定义</span><br><span class="line">&gt; 将这个函数改为异步版本</span><br><span class="line">&gt; 添加错误处理到所有 API 调用</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-Git-工作流集成"><a href="#3-Git-工作流集成" class="headerlink" title="3. Git 工作流集成"></a>3. Git 工作流集成</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; 创建一个新分支 feature/user-auth</span><br><span class="line">&gt; 提交当前更改，消息为 &quot;添加用户认证&quot;</span><br><span class="line">&gt; 查看最近的提交历史</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-测试驱动开发"><a href="#4-测试驱动开发" class="headerlink" title="4. 测试驱动开发"></a>4. 测试驱动开发</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; 为 UserService 编写单元测试</span><br><span class="line">&gt; 运行测试并修复失败的用例</span><br><span class="line">&gt; 检查测试覆盖率</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-终端命令执行"><a href="#5-终端命令执行" class="headerlink" title="5. 终端命令执行"></a>5. 终端命令执行</h3><p>Claude Code 可以直接运行 bash 命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; 安装 lodash 依赖</span><br><span class="line">&gt; 运行开发服务器</span><br><span class="line">&gt; 清理 dist 目录</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h2><h3 id="复杂任务使用-Plan-Mode"><a href="#复杂任务使用-Plan-Mode" class="headerlink" title="复杂任务使用 Plan Mode"></a>复杂任务使用 Plan Mode</h3><p>对于复杂的功能开发，使用 Plan Mode 可以避免方向错误：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">按 Shift+Tab 进入 Plan Mode</span><br><span class="line"></span><br><span class="line">&gt; 我要添加 Google OAuth 登录</span><br><span class="line">&gt; 需要修改哪些文件？会话流程是怎样的？</span><br><span class="line">&gt; 制定一个实现计划</span><br></pre></td></tr></table></figure>
+
+<p><strong>好处：</strong></p>
+<ul>
+<li>Claude 先探索代码库</li>
+<li>提出实现方案供你审批</li>
+<li>避免方向错误导致的返工</li>
+</ul>
+<h3 id="及早纠错"><a href="#及早纠错" class="headerlink" title="及早纠错"></a>及早纠错</h3><p>如果 Claude 开始偏离正确方向：</p>
+<ul>
+<li>按 <code>Escape</code> 立即停止</li>
+<li>使用 <code>/rewind</code> 或双击 <code>Escape</code> 恢复到之前的检查点</li>
+<li>重新调整方向</li>
+</ul>
+<h3 id="提供验证目标"><a href="#提供验证目标" class="headerlink" title="提供验证目标"></a>提供验证目标</h3><p>在提示中包含测试用例、截图或预期输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; 添加搜索功能</span><br><span class="line">&gt; 要求：输入时实时过滤，最多显示10条结果</span><br><span class="line">&gt; 测试：输入 &quot;user&quot; 应显示所有用户相关结果</span><br></pre></td></tr></table></figure>
+
+<h3 id="增量测试"><a href="#增量测试" class="headerlink" title="增量测试"></a>增量测试</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; 先写一个文件，测试一下</span><br><span class="line">&gt; 测试通过后继续下一个</span><br></pre></td></tr></table></figure>
+
+<p>这能及早发现问题，修复成本更低。</p>
+<hr>
+<h2 id="高级功能"><a href="#高级功能" class="headerlink" title="高级功能"></a>高级功能</h2><h3 id="CLAUDE-md-项目配置"><a href="#CLAUDE-md-项目配置" class="headerlink" title="CLAUDE.md 项目配置"></a>CLAUDE.md 项目配置</h3><p>在项目根目录创建 <code>CLAUDE.md</code> 文件，提供项目上下文：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="section"># 项目说明</span></span><br><span class="line"></span><br><span class="line">这是一个电商后台管理系统。</span><br><span class="line"></span><br><span class="line"><span class="section">## 技术栈</span></span><br><span class="line"><span class="bullet">-</span> 前端：React + TypeScript + TailwindCSS</span><br><span class="line"><span class="bullet">-</span> 后端：Node.js + Express + PostgreSQL</span><br><span class="line"><span class="bullet">-</span> 认证：JWT + OAuth2</span><br><span class="line"></span><br><span class="line"><span class="section">## 开发规范</span></span><br><span class="line"><span class="bullet">-</span> 使用函数式组件</span><br><span class="line"><span class="bullet">-</span> 所有 API 调用需要错误处理</span><br><span class="line"><span class="bullet">-</span> 测试覆盖率要求 80%+</span><br><span class="line"></span><br><span class="line"><span class="section">## 常用命令</span></span><br><span class="line"><span class="bullet">-</span> 启动开发：npm run dev</span><br><span class="line"><span class="bullet">-</span> 运行测试：npm test</span><br><span class="line"><span class="bullet">-</span> 构建：npm run build</span><br><span class="line"></span><br><span class="line"><span class="section">## 注意事项</span></span><br><span class="line"><span class="bullet">-</span> 不要修改 src/core/ 目录下的文件</span><br><span class="line"><span class="bullet">-</span> 所有新组件需要添加 PropTypes</span><br></pre></td></tr></table></figure>
+
+<h3 id="Hooks（钩子）"><a href="#Hooks（钩子）" class="headerlink" title="Hooks（钩子）"></a>Hooks（钩子）</h3><p>Hooks 可以在特定事件发生时自动执行操作。在 <code>.claude/hooks.json</code> 中配置：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;description&quot;</span><span class="punctuation">:</span> <span class="string">&quot;项目自动化钩子&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;hooks&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;SessionStart&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;matcher&quot;</span><span class="punctuation">:</span> <span class="string">&quot;*&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;hooks&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">          <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;command&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;command&quot;</span><span class="punctuation">:</span> <span class="string">&quot;npm install&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;timeout&quot;</span><span class="punctuation">:</span> <span class="number">60</span></span><br><span class="line">          <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">]</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;PreToolUse&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;matcher&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Write|Edit&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;hooks&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">          <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;prompt&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;prompt&quot;</span><span class="punctuation">:</span> <span class="string">&quot;检查文件写入是否安全：系统路径、凭据、路径遍历、敏感内容&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;timeout&quot;</span><span class="punctuation">:</span> <span class="number">30</span></span><br><span class="line">          <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">]</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;Stop&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;matcher&quot;</span><span class="punctuation">:</span> <span class="string">&quot;*&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;hooks&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">          <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;prompt&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;prompt&quot;</span><span class="punctuation">:</span> <span class="string">&quot;验证任务完成：运行测试、构建成功、问题已回答&quot;</span></span><br><span class="line">          <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">]</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>常用 Hook 事件：</strong></p>
+<table>
+<thead>
+<tr>
+<th>事件</th>
+<th>触发时机</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>SessionStart</code></td>
+<td>会话开始</td>
+<td>环境准备、依赖安装</td>
+</tr>
+<tr>
+<td><code>PreToolUse</code></td>
+<td>工具调用前</td>
+<td>安全检查、权限验证</td>
+</tr>
+<tr>
+<td><code>Stop</code></td>
+<td>会话结束</td>
+<td>任务验证、清理工作</td>
+</tr>
+<tr>
+<td><code>UserPromptSubmit</code></td>
+<td>用户提交提示</td>
+<td>输入验证、格式检查</td>
+</tr>
+</tbody></table>
+<h3 id="Skills（技能）"><a href="#Skills（技能）" class="headerlink" title="Skills（技能）"></a>Skills（技能）</h3><p>Skills 是可复用的编码模式，在 <code>.claude/skills/</code> 目录下定义：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">name: react-component</span><br><span class="line"><span class="section">description: 创建 React 组件的最佳实践</span></span><br><span class="line"><span class="section">---</span></span><br><span class="line"></span><br><span class="line"><span class="section"># React 组件开发技能</span></span><br><span class="line"></span><br><span class="line"><span class="section">## 模板结构</span></span><br><span class="line"></span><br><span class="line"><span class="code">```typescript</span></span><br><span class="line"><span class="code">import React from &#x27;react&#x27;;</span></span><br><span class="line"><span class="code">import PropTypes from &#x27;prop-types&#x27;;</span></span><br><span class="line"><span class="code"></span></span><br><span class="line"><span class="code">interface Props &#123;</span></span><br><span class="line"><span class="code">  // 定义 props 类型</span></span><br><span class="line"><span class="code">&#125;</span></span><br><span class="line"><span class="code"></span></span><br><span class="line"><span class="code">export const ComponentName: React.FC&lt;Props&gt; = (&#123; props &#125;) =&gt; &#123;</span></span><br><span class="line"><span class="code">  return (</span></span><br><span class="line"><span class="code">    &lt;div&gt;</span></span><br><span class="line"><span class="code">      &#123;/* 组件内容 */&#125;</span></span><br><span class="line"><span class="code">    &lt;/div&gt;</span></span><br><span class="line"><span class="code">  );</span></span><br><span class="line"><span class="code">&#125;;</span></span><br><span class="line"><span class="code"></span></span><br><span class="line"><span class="code">ComponentName.propTypes = &#123;</span></span><br><span class="line"><span class="code">  // PropTypes 定义</span></span><br><span class="line"><span class="code">&#125;;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="最佳实践-1"><a href="#最佳实践-1" class="headerlink" title="最佳实践"></a>最佳实践</h2><ul>
+<li>使用函数式组件和 Hooks</li>
+<li>使用 TypeScript 定义类型</li>
+<li>添加 PropTypes 验证</li>
+<li>导出命名组件而非默认导出</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 自定义 Slash Commands</span><br><span class="line"></span><br><span class="line">在 `.claude/commands/` 目录创建自定义命令：</span><br><span class="line"></span><br><span class="line">```markdown</span><br><span class="line">---</span><br><span class="line">description: 生成 API 客户端代码</span><br><span class="line">argument-hint: [api-spec-file]</span><br><span class="line">allowed-tools: Read, Write</span><br><span class="line">---</span><br><span class="line"></span><br><span class="line">根据 OpenAPI 规范文件 $1，生成 TypeScript API 客户端代码。</span><br><span class="line"></span><br><span class="line">要求：</span><br><span class="line">- 使用 axios 作为 HTTP 客户端</span><br><span class="line">- 包含完整的类型定义</span><br><span class="line">- 支持请求/响应拦截器</span><br><span class="line">- 添加错误处理</span><br></pre></td></tr></table></figure>
+
+<p>使用：<code>/generate-api-client ./api-spec.yaml</code></p>
+<hr>
+<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><h3 id="内置-Slash-Commands"><a href="#内置-Slash-Commands" class="headerlink" title="内置 Slash Commands"></a>内置 Slash Commands</h3><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>功能</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>/help</code></td>
+<td>显示帮助信息</td>
+<td><code>/help</code></td>
+</tr>
+<tr>
+<td><code>/clear</code></td>
+<td>清空对话历史</td>
+<td><code>/clear</code></td>
+</tr>
+<tr>
+<td><code>/rewind</code></td>
+<td>回退到之前的状态</td>
+<td><code>/rewind</code></td>
+</tr>
+<tr>
+<td><code>/plan</code></td>
+<td>进入计划模式</td>
+<td><code>/plan</code></td>
+</tr>
+<tr>
+<td><code>/commit</code></td>
+<td>创建 Git 提交</td>
+<td><code>/commit</code></td>
+</tr>
+<tr>
+<td><code>/review</code></td>
+<td>代码审查</td>
+<td><code>/review</code></td>
+</tr>
+<tr>
+<td><code>/test</code></td>
+<td>运行测试</td>
+<td><code>/test</code></td>
+</tr>
+<tr>
+<td><code>/plugin</code></td>
+<td>管理插件</td>
+<td><code>/plugin list</code></td>
+</tr>
+</tbody></table>
+<h3 id="快捷键"><a href="#快捷键" class="headerlink" title="快捷键"></a>快捷键</h3><table>
+<thead>
+<tr>
+<th>快捷键</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Enter</code></td>
+<td>发送消息</td>
+</tr>
+<tr>
+<td><code>Shift + Enter</code></td>
+<td>换行（不发送）</td>
+</tr>
+<tr>
+<td><code>Escape</code></td>
+<td>停止当前操作</td>
+</tr>
+<tr>
+<td><code>Double Escape</code></td>
+<td>恢复到上一次检查点</td>
+</tr>
+<tr>
+<td><code>Ctrl + C</code></td>
+<td>退出 Claude Code</td>
+</tr>
+<tr>
+<td><code>Shift + Tab</code></td>
+<td>进入&#x2F;退出 Plan Mode</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="故障排除"><a href="#故障排除" class="headerlink" title="故障排除"></a>故障排除</h2><h3 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h3><p><strong>Q: 命令找不到 <code>claude</code></strong></p>
+<p>A: 确保 npm 全局安装路径在 PATH 中：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看npm全局路径</span></span><br><span class="line">npm config get prefix</span><br><span class="line"><span class="comment"># 将输出路径添加到系统 PATH</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Q: API 调用失败</strong></p>
+<p>A: 检查环境变量是否正确设置：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Windows</span></span><br><span class="line"><span class="built_in">echo</span> %ANTHROPIC_AUTH_TOKEN%</span><br><span class="line"><span class="built_in">echo</span> %ANTHROPIC_BASE_URL%</span><br><span class="line"></span><br><span class="line"><span class="comment"># Linux/macOS</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$ANTHROPIC_AUTH_TOKEN</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$ANTHROPIC_BASE_URL</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Q: Claude 无法读取文件</strong></p>
+<p>A: 确保在项目根目录运行 <code>claude</code>，并检查文件权限。</p>
+<p><strong>Q: 响应速度慢</strong></p>
+<p>A: 尝试切换模型或减少上下文：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; 使用 sonnet 模型</span><br><span class="line">&gt; 只分析 src/ 目录</span><br></pre></td></tr></table></figure>
+
+<p><strong>Q: Hooks 不生效</strong></p>
+<p>A: Hooks 修改后需要重启 Claude Code 会话。</p>
+<hr>
+<h2 id="进阶技巧"><a href="#进阶技巧" class="headerlink" title="进阶技巧"></a>进阶技巧</h2><h3 id="1-使用-MCP-服务器"><a href="#1-使用-MCP-服务器" class="headerlink" title="1. 使用 MCP 服务器"></a>1. 使用 MCP 服务器</h3><p>MCP (Model Context Protocol) 让 Claude Code 能够访问外部服务：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// .claude/settings.json</span></span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;mcpServers&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;filesystem&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;command&quot;</span><span class="punctuation">:</span> <span class="string">&quot;npx&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;args&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;-y&quot;</span><span class="punctuation">,</span> <span class="string">&quot;@modelcontextprotocol/server-filesystem&quot;</span><span class="punctuation">,</span> <span class="string">&quot;/path/to/allowed/files&quot;</span><span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-上下文管理"><a href="#2-上下文管理" class="headerlink" title="2. 上下文管理"></a>2. 上下文管理</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; 只关注 auth 相关文件</span><br><span class="line">&gt; 忽略 node_modules 和 dist</span><br><span class="line">&gt; 使用 @src/api/User.ts 引用特定文件</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-多文件操作"><a href="#3-多文件操作" class="headerlink" title="3. 多文件操作"></a>3. 多文件操作</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; 重构所有 API 调用文件，使用新的错误处理</span><br><span class="line">&gt; 为所有组件添加单元测试</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-子任务代理"><a href="#4-子任务代理" class="headerlink" title="4. 子任务代理"></a>4. 子任务代理</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; 使用子代理分析性能问题</span><br><span class="line">&gt; 并行运行测试和构建</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="参考资源"><a href="#参考资源" class="headerlink" title="参考资源"></a>参考资源</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://code.claude.com/">Claude Code 官方文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/affaan-m/everything-claude-code">Everything Claude Code</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/nikiforovall/claude-code-rules">Claude Code Handbook</a></li>
+<li><a target="_blank" rel="noopener" href="https://deeprouter.top/">DeepRouter 安装参考</a></li>
+</ul>
+<hr>
+<h2 id="更新日志"><a href="#更新日志" class="headerlink" title="更新日志"></a>更新日志</h2><ul>
+<li>2026-02-19: 根据 Claude Code v2.1.39 更新内容</li>
+<li>2026-02-01: 初始版本</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Agent/" rel="tag"># Agent</a>
+              <a href="/tags/Beginner/" rel="tag"># Beginner</a>
+              <a href="/tags/Claude/" rel="tag"># Claude</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+            </div>
+            <div class="post-nav-item">
+                <a href="/2026/02/19/hello-world/" rel="next" title="Hello World">
+                  Hello World <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2024 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Jacheut</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>
